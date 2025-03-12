@@ -3,160 +3,162 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nearnet.in - Connecting Neighbours</title>
+  <title>Nearnet.in - Login</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <style>
-    /* Basic resets and styling */
+    /* Global resets and typography */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial, sans-serif; background: #f7f7f7; color: #333; }
-    header { background: #4CAF50; color: #fff; text-align: center; padding: 20px; }
-    header h1 { font-size: 2.5em; }
-    header p { font-size: 1em; }
-    .container { max-width: 1200px; margin: auto; padding: 20px; }
-    .random-images { display: flex; justify-content: space-around; margin: 20px 0; }
-    .random-images img { width: 22%; border-radius: 8px; }
-    .login-section { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    .login-section h2 { margin-bottom: 15px; }
-    .login-section input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; }
-    .login-section button { padding: 10px 20px; background: #4CAF50; border: none; color: #fff; border-radius: 4px; cursor: pointer; }
-    .login-section a { display: block; margin-top: 15px; text-align: center; color: #4CAF50; text-decoration: none; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; color: #333; }
+    
+    /* Header styling */
+    header {
+      background: #2c3e50;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    header h1 { font-size: 1.8rem; }
+    header p { font-size: 0.9rem; margin-top: 0.3rem; opacity: 0.8; }
+    
+    /* Container for login card */
+    .container { max-width: 600px; margin: 2rem auto; padding: 1rem; }
+    .login-card {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    .login-card:hover { transform: scale(1.02); }
+    .login-card h2 { text-align: center; margin-bottom: 1rem; }
+    
+    /* Form elements */
+    .login-card input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      transition: border-color 0.3s ease;
+    }
+    .login-card input:focus { border-color: #3498db; }
+    .login-card button {
+      width: 100%;
+      padding: 10px;
+      background: #3498db;
+      border: none;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-size: 1rem;
+    }
+    .login-card button:hover { background: #2980b9; }
+    .login-card a {
+      display: block;
+      text-align: center;
+      margin-top: 1rem;
+      color: #3498db;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    
+    /* Spinner */
     .spinner {
       display: none;
       border: 4px solid #f3f3f3;
-      border-top: 4px solid #4CAF50;
+      border-top: 4px solid #3498db;
       border-radius: 50%;
       width: 40px;
       height: 40px;
       animation: spin 1s linear infinite;
       margin: 10px auto;
     }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    
+    /* Mobile adjustments */
+    @media (max-width:768px) {
+      .container { padding: 0 0.5rem; }
     }
   </style>
 </head>
 <body>
   <header>
     <h1>nearnet.in</h1>
-    <p>connecting neighbours</p>
+    <p>Network of nearest people</p>
   </header>
   <div class="container">
-    <div class="random-images" id="randomImages">
-      <!-- Images will be injected by JS -->
-    </div>
-    <div class="login-section">
-      <h2>Login</h2>
-      <input type="text" id="loginUserId" placeholder="User ID" />
-      <input type="password" id="loginPassword" placeholder="Password" />
-      <button id="loginButton">Login</button>
+    <div class="login-card">
+      <h2><i class="fa-solid fa-user"></i> Login</h2>
+      <input type="text" id="loginUserId" placeholder="User ID" required />
+      <input type="password" id="loginPassword" placeholder="Password" required />
+      <button id="loginButton"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
       <div class="spinner" id="loginSpinner"></div>
-      <a href="newuser.html">Join Nearnet</a>
+      <a href="newuser.html"><i class="fa-solid fa-user-plus"></i> Join Nearnet</a>
     </div>
   </div>
   
-  <!-- SweetAlert2 for improved alerts -->
+  <!-- SweetAlert2 and Supabase JS -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <!-- Supabase JS Library (UMD build for v2) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      console.log("DOM fully loaded and parsed");
-
+      console.log("DOM fully loaded.");
       const SUPABASE_URL = 'https://elxyhkfuuugjskallwsp.supabase.co';
       const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVseHloa2Z1dXVnanNrYWxsd3NwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg4MjA5ODksImV4cCI6MjA1NDM5Njk4OX0.BAEvcCVIQiVdsg0m3xX72Xi0p-vnJ4WqfZU0mE_Tuk0';
+   
       const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      console.log("Supabase client initialized.");
-
-      // Display random images
-      const images = ['image1.jpg', 'image2.jpg', 'image3.jpg', 'image4.jpg'];
-      const randomImagesDiv = document.getElementById('randomImages');
-
-      function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-      }
-
-      function displayRandomImages() {
-        randomImagesDiv.innerHTML = '';
-        const shuffledImages = shuffleArray([...images]);
-        shuffledImages.forEach(imgName => {
-          const img = document.createElement('img');
-          img.src = 'images/' + imgName;
-          img.alt = imgName;
-          randomImagesDiv.appendChild(img);
-        });
-        console.log("Random images displayed.");
-      }
-      displayRandomImages();
-
-      // Login function stores the full user object in localStorage as "currentUser"
+      
       async function loginUser(autoLogin = false) {
-        console.log("Login attempt started.");
         const userId = document.getElementById('loginUserId').value.trim();
         const password = document.getElementById('loginPassword').value.trim();
         if (!userId || !password) {
           Swal.fire({ icon: 'warning', title: 'Missing Fields', text: 'Please enter both User ID and Password.' });
           return;
         }
-        const spinner = document.getElementById('loginSpinner');
-        spinner.style.display = 'block';
-
+        document.getElementById('loginSpinner').style.display = 'block';
         try {
-          console.log("Checking credentials for:", userId);
           const { data, error } = await supabaseClient
             .from('users')
             .select('*')
             .eq('user_id', userId)
             .eq('password', password)
             .single();
-
           if (error || !data) {
-            console.error("Login failed:", error);
-            Swal.fire({ icon: 'error', title: 'Login Failed', text: 'Invalid credentials. Please try again.' });
+            Swal.fire({ icon: 'error', title: 'Login Failed', text: 'Invalid credentials.' });
           } else {
-            console.log("Login successful for:", data.name);
-            // Store the complete user object
             localStorage.setItem('currentUser', JSON.stringify(data));
             if (autoLogin) {
-              console.log("Auto-login: redirecting without alert.");
               window.location.href = 'home.html?name=' + encodeURIComponent(data.name);
             } else {
-              Swal.fire({
-                icon: 'success',
-                title: 'Login Successful',
-                text: `Welcome, ${data.name}!`,
-                showCancelButton: false
-              }).then(() => {
+              Swal.fire({ icon: 'success', title: 'Login Successful', text: `Welcome, ${data.name}!` })
+              .then(() => {
                 window.location.href = 'home.html?name=' + encodeURIComponent(data.name);
               });
             }
           }
         } catch (err) {
-          console.error("Error during login:", err);
           Swal.fire({ icon: 'error', title: 'Error', text: err.message });
         } finally {
-          spinner.style.display = 'none';
-          console.log("Login attempt finished.");
+          document.getElementById('loginSpinner').style.display = 'none';
         }
       }
-
-      // Auto-login: Check if currentUser already exists in localStorage
+      
+      // Auto-login if user already exists in localStorage
       const storedUser = localStorage.getItem('currentUser');
       if (storedUser) {
         const userObj = JSON.parse(storedUser);
-        console.log("Stored currentUser found. Redirecting to home page.");
         document.getElementById('loginUserId').value = userObj.user_id;
-        // (Optional: Populate the password field if needed)
         document.getElementById('loginPassword').value = userObj.password;
         window.location.href = 'home.html?name=' + encodeURIComponent(userObj.name);
-        return; // Stop further execution
+        return;
       }
-
+      
       document.getElementById('loginButton').addEventListener('click', () => loginUser());
     });
   </script>
 </body>
 </html>
+
