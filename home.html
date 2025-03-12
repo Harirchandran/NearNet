@@ -4,10 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nearnet.in - Home</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     /* Global resets and typography */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; color: #333; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; color: #333; transition: background 0.3s ease; }
     
     /* Header styling */
     header { 
@@ -18,6 +20,8 @@
       display: flex; 
       align-items: center; 
       justify-content: center; 
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
     }
     header h1 { font-size: 1.8rem; }
     .header-buttons {
@@ -33,19 +37,22 @@
       color: #fff;
       border-radius: 4px;
       cursor: pointer;
+      transition: background 0.3s ease;
     }
+    .header-buttons button:hover { background: #2980b9; }
     
     /* Container and dashboard */
     .container { max-width: 1200px; margin: 1rem auto; padding: 0 1rem; }
     .welcome { margin: 1rem 0; font-size: 1.4rem; }
-    .dashboard { background: #fff; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .dashboard { background: #fff; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: transform 0.3s ease; }
+    .dashboard:hover { transform: scale(1.01); }
     .dashboard h3 { margin-bottom: 1rem; border-bottom: 2px solid #eee; padding-bottom: 0.5rem; color: #2c3e50; }
     
     /* Radius selector */
     .radius-selector { margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
     
     /* Event cards */
-    .event-card { background: #fff; padding: 1rem; border: 1px solid #eee; border-radius: 8px; margin-bottom: 1rem; transition: transform 0.2s; }
+    .event-card { background: #fff; padding: 1rem; border: 1px solid #eee; border-radius: 8px; margin-bottom: 1rem; transition: transform 0.2s ease, box-shadow 0.2s ease; }
     .event-card:hover { transform: translateY(-2px); box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
     .event-card h4 { margin-bottom: 0.5rem; color: #2c3e50; }
     .event-card .event-status {
@@ -62,14 +69,14 @@
     .action-buttons { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
     .action-buttons button {
       flex: 1 1 180px; padding: 0.75rem 1rem; border: none; border-radius: 4px;
-      background: #e67e22; color: #fff; cursor: pointer; transition: background 0.2s;
+      background: #e67e22; color: #fff; cursor: pointer; transition: background 0.2s ease;
     }
     .action-buttons button:hover { background: #d35400; }
     
     /* Nearnext Coins Section */
     .coins-section {
       background: #fff; padding: 1rem; border-radius: 8px; text-align: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 1.5rem; transition: background 0.3s ease;
     }
     .coins-section h4 { margin-bottom: 0.5rem; color: #2c3e50; }
     
@@ -81,7 +88,9 @@
       background: rgba(0,0,0,0.5);
       align-items: center; justify-content: center;
       z-index: 1000;
+      animation: fadeIn 0.3s ease;
     }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     .overlay-content {
       background: #fff;
       border-radius: 8px;
@@ -89,7 +98,9 @@
       max-width: 500px;
       width: 95%;
       position: relative;
+      animation: slideDown 0.3s ease;
     }
+    @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     .overlay-content button.close-overlay {
       position: absolute;
       top: 1rem;
@@ -99,6 +110,7 @@
       font-size: 1.5rem;
       cursor: pointer;
     }
+    
     /* Ask Help Form styles */
     .ask-help-form input,
     .ask-help-form textarea,
@@ -108,6 +120,12 @@
       margin: 0.5rem 0;
       border: 1px solid #ddd;
       border-radius: 4px;
+      transition: border-color 0.3s ease;
+    }
+    .ask-help-form input:focus,
+    .ask-help-form textarea:focus,
+    .ask-help-form select:focus {
+      border-color: #3498db;
     }
     .ask-help-form button {
       padding: 10px 20px;
@@ -117,7 +135,10 @@
       border-radius: 4px;
       cursor: pointer;
       margin-top: 1rem;
+      transition: background 0.3s ease;
     }
+    .ask-help-form button:hover { background: #2980b9; }
+    
     /* QR Scanner Overlay styles */
     .qr-scanner-container {
       width: 100%;
@@ -134,7 +155,10 @@
       border-radius: 4px;
       cursor: pointer;
       margin-top: 1rem;
+      transition: background 0.3s ease;
     }
+    .qr-scanner-form button:hover { background: #27ae60; }
+    
     /* Urgent Emergency Form styles */
     .urgent-emergency-form textarea {
       width: 100%;
@@ -142,7 +166,9 @@
       margin: 0.5rem 0;
       border: 1px solid #ddd;
       border-radius: 4px;
+      transition: border-color 0.3s ease;
     }
+    .urgent-emergency-form textarea:focus { border-color: #e74c3c; }
     .urgent-emergency-form button {
       padding: 10px 20px;
       background: #e74c3c;
@@ -151,7 +177,9 @@
       border-radius: 4px;
       cursor: pointer;
       margin-top: 1rem;
+      transition: background 0.3s ease;
     }
+    .urgent-emergency-form button:hover { background: #c0392b; }
     
     /* Spinner */
     .spinner {
@@ -168,11 +196,25 @@
     /* Red Dot / Warning Icon for urgent events */
     .urgent-warning {
       color: red;
-      font-weight: bold;
+      font-size: 1.2rem;
       margin-left: 0.5rem;
     }
     
-    /* Responsive adjustments */
+    /* "Get Directions" button style */
+    .get-direction-btn {
+      background: #2980b9;
+      border: none;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+    .get-direction-btn:hover { background: #1c5980; }
+    
+    /* Mobile adjustments to mimic app UI */
     @media (max-width:768px) {
       header h1 { font-size: 1.6rem; }
       .header-buttons { position: static; margin-top: 1rem; justify-content: center; }
@@ -189,8 +231,8 @@
   <header>
     <h1>nearnet.in</h1>
     <div class="header-buttons">
-      <button id="myQRBtn">My QR</button>
-      <button id="logoutBtn">Logout</button>
+      <button id="myQRBtn"><i class="fa-solid fa-qrcode"></i> My QR</button>
+      <button id="logoutBtn"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
     </div>
   </header>
   
@@ -224,15 +266,15 @@
     
     <!-- Action Buttons -->
     <div class="action-buttons">
-      <button id="askHelpBtn">Ask Help</button>
-      <button id="urgentEmergencyBtn">Urgent Emergency</button>
-      <button id="hostEventBtn">Host Party/Events/Games</button>
-      <button id="exchangeBtn">Exchange/Borrow Households</button>
-      <button id="onlineGamesBtn">Online Games</button>
+      <button id="askHelpBtn"><i class="fa-solid fa-hands-helping"></i> Ask Help</button>
+      <button id="urgentEmergencyBtn"><i class="fa-solid fa-bell"></i> Urgent Emergency</button>
+      <button id="hostEventBtn"><i class="fa-solid fa-calendar-plus"></i> Host Party/Events/Games</button>
+      <button id="exchangeBtn"><i class="fa-solid fa-arrows-alt-h"></i> Exchange/Borrow Households</button>
+      <button id="onlineGamesBtn"><i class="fa-solid fa-gamepad"></i> Online Games</button>
     </div>
     
     <!-- Nearnext Coins Section -->
-    <div class="coins-section">
+    <div class="coins-section" id="coinsSection">
       <h4>Nearnext Coins: <span id="rewardPoints">0</span></h4>
       <p>Attend events to earn coins!</p>
     </div>
@@ -300,7 +342,7 @@
     </div>
   </div>
   
-  <!-- SweetAlert2 + Supabase -->
+  <!-- SweetAlert2 + Supabase Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   
@@ -313,18 +355,18 @@
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     console.log("Supabase client initialized.");
     
-    // 2. currentUser from localStorage
+    // 2. Get currentUser from localStorage; redirect if not found
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (!currentUser) {
       console.error("No currentUser found, redirecting.");
       window.location.href = 'index.html';
     }
     
-    // 3. Welcome message & coins
+    // 3. Update welcome message & coins
     document.getElementById('welcomeMessage').textContent = `Welcome, ${currentUser.name}!`;
     document.getElementById('rewardPoints').textContent = currentUser.reward_points || 0;
     
-    // 3a. Logout
+    // 3a. Logout functionality
     document.getElementById('logoutBtn').addEventListener('click', () => {
       Swal.fire({ icon: 'success', title: 'Logged Out', text: 'You have been successfully logged out.' })
       .then(() => {
@@ -333,11 +375,11 @@
       });
     });
     
-    // 3b. "My QR" - show an overlay with user_id as QR code
+    // 3b. "My QR" button displays QR code for currentUser.user_id
     document.getElementById('myQRBtn').addEventListener('click', () => {
       document.getElementById('qrOverlay').style.display = 'flex';
       const qrContainer = document.getElementById('qrCodeContainer');
-      qrContainer.innerHTML = ''; // clear any old code
+      qrContainer.innerHTML = '';
       new QRCode(qrContainer, {
         text: currentUser.user_id,
         width: 128,
@@ -371,7 +413,7 @@
     }
     requestAndUpdateLocation();
     
-    // 5. Load events
+    // 5. Load events (Available & Your Created Events)
     async function loadEvents() {
       console.log("Loading events...");
       const availableSpinner = document.getElementById('availableEventsSpinner');
@@ -382,7 +424,7 @@
         const radius = parseInt(document.getElementById('radiusSelector').value);
         console.log("Radius:", radius);
         
-        // "Available" events from RPC
+        // "Available" events from RPC (including location as text)
         let { data: nearbyEvents, error: nearbyError } = await supabaseClient.rpc('nearby_events', {
           current_location: currentUser.location,
           max_distance: radius
@@ -397,12 +439,13 @@
         if (nearbyError || myEventsError) throw nearbyError || myEventsError;
         console.log("Events loaded:", nearbyEvents, myEvents);
         
-        // Filter out your own events from "available"
+        // Filter out your own events from "Available Events"
         const filteredNearby = (nearbyEvents || []).filter(e => e.user_id !== currentUser.user_id);
         
         renderEvents(filteredNearby, 'availableEventsList', true);
         renderEvents(myEvents, 'createdEventsList', false);
         updateTimeRemaining();
+        clearUnusedUrgentIntervals(filteredNearby.map(e => e.id));
       } catch (error) {
         console.error("Error loading events:", error.message);
         Swal.fire({ icon: 'error', title: 'Error', text: 'Failed to load events: ' + error.message });
@@ -411,22 +454,22 @@
         if (createdSpinner) createdSpinner.style.display = 'none';
       }
     }
-    setInterval(loadEvents, 10000); // auto-refresh
+    setInterval(loadEvents, 10000); // auto-refresh every 10 seconds
     
     // 6. Event status logic
     function getEventStatus(event) {
-      // If the event has 'status' == false, it's completed
       if (!event.status) return 'completed';
-      // If there's no end_time, treat as 'active'
       if (!event.end_time) return 'active';
-      
       const now = new Date();
       const endTime = new Date(event.end_time);
       return now > endTime ? 'expired' : 'active';
     }
     
-    // 7. Render events
-    // "isAvailableList" param to show "Get Directions" button if true
+    // Global sets & maps for vibration control
+    const vibratedEventIds = new Set(); // for one-time vibration on non-urgent events
+    const urgentVibrationIntervals = {}; // map of event.id -> intervalID
+    
+    // 7. Render events; isAvailableList: if true, add "Get Directions" button and extra urgent logic
     function renderEvents(events, containerId, isAvailableList) {
       const container = document.getElementById(containerId);
       container.innerHTML = '';
@@ -441,19 +484,29 @@
         let eventLabel = '';
         let timerHTML = '';
         
-        // If urgent, show a warning symbol & repeated vibration
-        if (event.event_type === 'urgent') {
-          // Add an urgent label
-          eventLabel = ' <span class="urgent-warning">\u26A0</span> [Urgent]';
-          // Vibrate repeatedly (simple approach)
-          if (navigator.vibrate) {
-            navigator.vibrate([200, 100, 200]);
+        // For urgent events in the available list, vibrate continuously if pending
+        if (isAvailableList && event.event_type === 'urgent') {
+          eventLabel = ' <span class="urgent-warning"><i class="fa-solid fa-exclamation-triangle"></i></span> [Urgent]';
+          // Start continuous vibration for urgent events (if not already started)
+          if (!urgentVibrationIntervals[event.id]) {
+            urgentVibrationIntervals[event.id] = setInterval(() => {
+              if (navigator.vibrate) {
+                navigator.vibrate(200);
+              }
+            }, 5000);
           }
         } else if (event.event_type === 'help') {
           eventLabel = ' [Help Request]';
+        } else {
+          eventLabel = '';
         }
         
-        // Show a timer if there's an end_time
+        // For all non-urgent events, vibrate one time when rendered (if not done already)
+        if (event.event_type !== 'urgent' && !vibratedEventIds.has(event.id) && navigator.vibrate) {
+          navigator.vibrate(200);
+          vibratedEventIds.add(event.id);
+        }
+        
         if (event.end_time) {
           timerHTML = `<span class="time-remaining" data-endtime="${event.end_time}"></span>`;
         }
@@ -467,22 +520,15 @@
                 ? (event.event_type === 'help' ? 'status-help' : 'status-active')
                 : 'status-completed'
             }">
-              ${
-                getEventStatus(event) === 'active'
-                  ? (event.event_type === 'help' ? 'Help' : 'Active')
-                  : 'Completed'
-              }
+              ${getEventStatus(event) === 'active' ? (event.event_type === 'help' ? 'Help' : 'Active') : 'Completed'}
             </span>
-            <!-- Distance from RPC -->
             <small>${(event.distance / 1000).toFixed(1)} km away</small>
           </div>
         `;
         
-        // If it's in "Available Events," add a "Get Directions" button
+        // If available event, add "Get Directions" button
         if (isAvailableList) {
-          card.innerHTML += `
-            <button class="get-direction-btn" style="margin-top: 0.5rem;">Get Directions</button>
-          `;
+          card.innerHTML += `<button class="get-direction-btn"><i class="fa-solid fa-location-dot"></i> Get Directions</button>`;
         }
         
         card.addEventListener('click', () => {
@@ -492,17 +538,27 @@
         
         container.appendChild(card);
         
-        // If we have a "Get Directions" button, wire up the click event
+        // Wire up the "Get Directions" button if in available events list
         if (isAvailableList) {
           const dirBtn = card.querySelector('.get-direction-btn');
           if (dirBtn) {
             dirBtn.addEventListener('click', (evt) => {
-              evt.stopPropagation(); // prevent also showing event details
+              evt.stopPropagation();
               getDirectionsForEvent(event);
             });
           }
         }
       });
+    }
+    
+    // Clear intervals for urgent events that are no longer in the current list
+    function clearUnusedUrgentIntervals(renderedUrgentIds) {
+      for (let id in urgentVibrationIntervals) {
+        if (!renderedUrgentIds.includes(Number(id))) {
+          clearInterval(urgentVibrationIntervals[id]);
+          delete urgentVibrationIntervals[id];
+        }
+      }
     }
     
     // 7b. Timer updates every second
@@ -523,13 +579,12 @@
     }
     setInterval(updateTimeRemaining, 1000);
     
-    // 7c. "Get Directions" -> parse event.location & open Google Maps
+    // 7c. Get Directions: parse event.location (e.g., "POINT(lng lat)") and open Google Maps
     function getDirectionsForEvent(event) {
       if (!event.location) {
         Swal.fire({ icon: 'error', title: 'No Location', text: 'This event has no valid location data.' });
         return;
       }
-      // event.location should be "POINT(lng lat)"
       const match = event.location.match(/POINT\((-?\d+(\.\d+)?)\s+(-?\d+(\.\d+)?)\)/);
       if (!match) {
         Swal.fire({ icon: 'error', title: 'Invalid Location', text: 'Could not parse event location.' });
@@ -541,7 +596,7 @@
       window.open(googleMapsUrl, '_blank');
     }
     
-    // 8. Show event details overlay
+    // 8. Show event details overlay with appropriate controls
     async function showEventDetails(eventId) {
       console.log("Showing details for eventId:", eventId);
       try {
@@ -552,13 +607,10 @@
           .single();
         if (error) throw error;
         
-        let content = `
-          <h3>${event.title}</h3>
-          <p>${event.description || 'No details provided.'}</p>
-          <p>Status: ${getEventStatus(event)}</p>
-        `;
+        let content = `<h3>${event.title}</h3>
+                       <p>${event.description || 'No details provided.'}</p>
+                       <p>Status: ${getEventStatus(event)}</p>`;
         
-        // If it's a help event, show additional controls
         if (event.event_type === 'help' || event.event_type === 'urgent') {
           const { data: participant } = await supabaseClient
             .from('event_participants')
@@ -594,7 +646,6 @@
         document.getElementById('eventDetailsContent').innerHTML = content;
         document.getElementById('eventDetailsOverlay').style.display = 'flex';
         
-        // Register to help
         if (document.getElementById('registerBtn')) {
           document.getElementById('registerBtn').addEventListener('click', async () => {
             console.log("Register button clicked for eventId:", eventId);
@@ -612,7 +663,6 @@
           });
         }
         
-        // Mark helped
         if (document.getElementById('markHelpedBtn')) {
           document.getElementById('markHelpedBtn').addEventListener('click', () => {
             console.log("Mark Helped button clicked for eventId:", eventId);
@@ -622,7 +672,6 @@
           });
         }
         
-        // End help
         if (document.getElementById('endHelpBtn')) {
           document.getElementById('endHelpBtn').addEventListener('click', async () => {
             console.log("End Help Request clicked for eventId:", eventId);
@@ -646,16 +695,14 @@
       }
     }
     
-    // 9. closeOverlay
+    // 9. Close overlay helper
     function closeOverlay(id) {
       const overlay = document.getElementById(id);
       if (overlay) {
         overlay.style.display = 'none';
-        // Clear QR code if overlay is My QR
         if (id === 'qrOverlay') {
           document.getElementById('qrCodeContainer').innerHTML = '';
         }
-        // Stop scanner if overlay is for scanning
         if (id === 'qrScannerOverlay' && html5QrcodeScanner) {
           html5QrcodeScanner.clear().catch(error => {
             console.error('Scanner cleanup error:', error);
@@ -668,24 +715,24 @@
     // 10. QR Scanner Setup
     let html5QrcodeScanner = null;
     function startScanner() {
-      if (!window.Html5Qrcode) {
-        console.error("html5-qrcode library not loaded.");
-        Swal.fire({ icon: "error", title: "QR Scanner Error", text: "QR scanner library failed to load." });
-        return;
-      }
-      if (!window.Html5QrcodeScanType) {
-        console.error("Html5QrcodeScanType is undefined.");
-        Swal.fire({ icon: "error", title: "Scanner Error", text: "QR scanner type is not supported." });
-        return;
-      }
-      if (!html5QrcodeScanner) {
-        html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { 
-          fps: 10, 
-          qrbox: 250,
-          supportedScanTypes: [window.Html5QrcodeScanType.SCAN_TYPE_CAMERA]
-        });
-        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-      }
+      ensureHtml5QrcodeLibrary(() => {
+        let scanTypes = null;
+        if (Html5Qrcode.ScanType && Html5Qrcode.ScanType.SCAN_TYPE_CAMERA) {
+          scanTypes = [Html5Qrcode.ScanType.SCAN_TYPE_CAMERA];
+        } else if (window.Html5QrcodeScanType && window.Html5QrcodeScanType.SCAN_TYPE_CAMERA) {
+          scanTypes = [window.Html5QrcodeScanType.SCAN_TYPE_CAMERA];
+        }
+        const config = { fps: 10, qrbox: 250 };
+        if (scanTypes) {
+          config.supportedScanTypes = scanTypes;
+        } else {
+          console.warn("No supportedScanTypes defined; using default scanner settings.");
+        }
+        if (!html5QrcodeScanner) {
+          html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", config);
+          html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+        }
+      });
     }
     function stopScanner() {
       if (html5QrcodeScanner) {
@@ -708,7 +755,7 @@
       closeOverlay('qrScannerOverlay');
     });
     
-    // 11. processMarkHelp
+    // 11. Process marking volunteer as helped
     async function processMarkHelp(volunteerId) {
       console.log("Processing mark helped for volunteerId:", volunteerId);
       const eventId = window.currentEventIdForMarking;
@@ -735,7 +782,6 @@
         Swal.fire({ icon: 'error', title: 'Error', text: updateError.message });
         return;
       }
-      // Award 1 coin to volunteer
       const { data: volunteerData } = await supabaseClient
         .from('users')
         .select('reward_points')
@@ -755,7 +801,7 @@
       loadEvents();
     }
     
-    // 12. Ask Help
+    // 12. Ask Help overlay functionality
     document.getElementById('askHelpBtn').addEventListener('click', () => {
       console.log("Ask Help button clicked.");
       document.getElementById('helpLocation').value = currentUser.location;
@@ -882,7 +928,7 @@
       }
     });
     
-    // 14. Under Development
+    // 14. Under Development buttons
     document.getElementById('hostEventBtn').addEventListener('click', () => {
       Swal.fire({ title: 'Host Event', text: 'This feature will allow you to host events. (Under Development)', icon: 'info' });
     });
@@ -911,6 +957,53 @@
         footer: `${event.filename}:${event.lineno}`
       });
     });
+    
+    // 18. Periodic coin update every 5 seconds
+    async function updateCoins() {
+      try {
+        const { data, error } = await supabaseClient
+          .from('users')
+          .select('reward_points')
+          .eq('user_id', currentUser.user_id)
+          .single();
+        if (error || !data) {
+          console.error("Error fetching coins:", error);
+          return;
+        }
+        const newPoints = data.reward_points;
+        if (newPoints > currentUser.reward_points) {
+          Swal.fire({ icon: 'success', title: 'Congratulations!', text: `You got a new coin!` });
+        }
+        currentUser.reward_points = newPoints;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        document.getElementById('rewardPoints').textContent = newPoints;
+      } catch (err) {
+        console.error("Error updating coins:", err);
+      }
+    }
+    setInterval(updateCoins, 5000);
+    
+    // 19. Helper to ensure html5-qrcode library is loaded
+    function ensureHtml5QrcodeLibrary(callback) {
+      if (window.Html5Qrcode) {
+        callback();
+      } else {
+        const script = document.createElement("script");
+        script.src = "https://cdn.jsdelivr.net/npm/html5-qrcode/minified/html5-qrcode.min.js";
+        script.onload = () => {
+          console.log("html5-qrcode library loaded successfully.");
+          callback();
+        };
+        script.onerror = () => {
+          console.error("Failed to load html5-qrcode library.");
+          Swal.fire({ icon: "error", title: "QR Scanner Error", text: "Failed to load html5-qrcode library." });
+        };
+        document.head.appendChild(script);
+      }
+    }
+    
+  
+    
   </script>
 </body>
 </html>
