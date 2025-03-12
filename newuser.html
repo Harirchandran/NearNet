@@ -4,74 +4,113 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nearnet.in - Create Account</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial, sans-serif; background: #f7f7f7; color: #333; }
-    header { background: #4CAF50; color: #fff; text-align: center; padding: 20px; }
-    header h1 { font-size: 2.5em; }
-    header p { font-size: 1em; }
-    .container { max-width: 600px; margin: 20px auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    form { display: flex; flex-direction: column; }
-    form input, form button { padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; }
-    form button { background: #4CAF50; color: #fff; border: none; cursor: pointer; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; color: #333; }
+    header {
+      background: #2c3e50;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    header h1 { font-size: 1.8rem; }
+    header p { font-size: 0.9rem; margin-top: 0.3rem; opacity: 0.8; }
+    
+    .container { max-width: 600px; margin: 2rem auto; padding: 1rem; }
+    .signup-card {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    .signup-card:hover { transform: scale(1.02); }
+    .signup-card h2 { text-align: center; margin-bottom: 1rem; }
+    
+    form { display: flex; flex-direction: column; gap: 0.8rem; }
+    form input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      transition: border-color 0.3s ease;
+    }
+    form input:focus { border-color: #3498db; }
+    form button {
+      width: 100%;
+      padding: 10px;
+      background: #3498db;
+      border: none;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-size: 1rem;
+    }
+    form button:hover { background: #2980b9; }
+    
+    .location-display { font-size: 0.9rem; color: #555; }
     .spinner {
       display: none;
       border: 4px solid #f3f3f3;
-      border-top: 4px solid #4CAF50;
+      border-top: 4px solid #3498db;
       border-radius: 50%;
       width: 40px;
       height: 40px;
       animation: spin 1s linear infinite;
       margin: 10px auto;
     }
-    @keyframes spin { 100% { transform: rotate(360deg); } }
-    .location-display { font-size: 0.9em; color: #555; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    
+    @media (max-width:768px) {
+      .container { padding: 0 0.5rem; }
+    }
   </style>
 </head>
 <body>
   <header>
     <h1>nearnet.in</h1>
-    <p>connecting neighbours</p>
+    <p>Network of nearest people</p>
   </header>
   <div class="container">
-    <h2>Welcome to nearnet.in</h2>
-    <p>Create your account below:</p>
-    <form id="signupForm">
-      <input type="text" id="userId" placeholder="User ID (Unique)" required />
-      <input type="text" id="name" placeholder="Name" required />
-      <input type="text" id="aadhaar" placeholder="Aadhaar (Unique)" required />
-      <input type="text" id="phone" placeholder="Phone" required />
-      <input type="email" id="email" placeholder="Email" required />
-      <input type="password" id="password" placeholder="Password" required />
-      <input type="password" id="rePassword" placeholder="Re-enter Password" required />
-      <!-- Location input will store the formatted point string -->
-      <input type="text" id="location" placeholder="Location" readonly required />
-      <div class="location-display" id="locationDisplay">Fetching location...</div>
-      <button type="button" id="getLocationBtn">Get Location</button>
-      <button type="submit">Create Account</button>
-      <div class="spinner" id="signupSpinner"></div>
-    </form>
+    <div class="signup-card">
+      <h2><i class="fa-solid fa-user-plus"></i> Create Account</h2>
+      <form id="signupForm">
+        <input type="text" id="userId" placeholder="User ID (Unique)" required />
+        <input type="text" id="name" placeholder="Name" required />
+        <input type="text" id="aadhaar" placeholder="Aadhaar (Unique)" required />
+        <input type="text" id="phone" placeholder="Phone" required />
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="password" id="password" placeholder="Password" required />
+        <input type="password" id="rePassword" placeholder="Re-enter Password" required />
+        <input type="text" id="location" placeholder="Location" readonly required />
+        <div class="location-display" id="locationDisplay">Fetching location...</div>
+        <button type="button" id="getLocationBtn"><i class="fa-solid fa-location-dot"></i> Get Location</button>
+        <button type="submit"><i class="fa-solid fa-check"></i> Create Account</button>
+        <div class="spinner" id="signupSpinner"></div>
+      </form>
+    </div>
   </div>
   
-  <!-- Supabase JS Library using the UMD build that defines "supabase" -->
+  <!-- Supabase JS and SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-    // Replace with your actual Supabase credentials
-    const SUPABASE_URL = 'https://elxyhkfuuugjskallwsp.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVseHloa2Z1dXVnanNrYWxsd3NwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg4MjA5ODksImV4cCI6MjA1NDM5Njk4OX0.BAEvcCVIQiVdsg0m3xX72Xi0p-vnJ4WqfZU0mE_Tuk0';
-    // Create a Supabase client using a new variable name
+  const SUPABASE_URL = 'https://elxyhkfuuugjskallwsp.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVseHloa2Z1dXVnanNrYWxsd3NwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg4MjA5ODksImV4cCI6MjA1NDM5Njk4OX0.BAEvcCVIQiVdsg0m3xX72Xi0p-vnJ4WqfZU0mE_Tuk0';
+   
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  
+    
     const locationDisplay = document.getElementById('locationDisplay');
     const locationInput = document.getElementById('location');
-  
-    // Get location button event
+    
     document.getElementById('getLocationBtn').addEventListener('click', () => {
       if (navigator.geolocation) {
         locationDisplay.textContent = 'Fetching location...';
         navigator.geolocation.getCurrentPosition(position => {
-          // Format the coordinates as a valid PostGIS point:
-          // Note: Order is longitude then latitude.
           const lng = position.coords.longitude;
           const lat = position.coords.latitude;
           const point = `POINT(${lng} ${lat})`;
@@ -79,14 +118,13 @@
           locationDisplay.textContent = 'Location: ' + point;
         }, error => {
           locationDisplay.textContent = 'Error fetching location.';
-          alert('Unable to fetch location. Please try again.');
+          Swal.fire({ icon: 'error', title: 'Location Error', text: 'Unable to fetch location. Please try again.' });
         });
       } else {
-        alert('Geolocation is not supported by your browser.');
+        Swal.fire({ icon: 'error', title: 'Not Supported', text: 'Geolocation is not supported by your browser.' });
       }
     });
-  
-    // Signup form submission
+    
     document.getElementById('signupForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const userId = document.getElementById('userId').value.trim();
@@ -96,21 +134,20 @@
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
       const rePassword = document.getElementById('rePassword').value;
-      const location = document.getElementById('location').value;
+      const location = locationInput.value;
       
       if (password !== rePassword) {
-        alert('Passwords do not match!');
+        Swal.fire({ icon: 'warning', title: 'Password Mismatch', text: 'Passwords do not match!' });
         return;
       }
       if (!location) {
-        alert('Please fetch your location.');
+        Swal.fire({ icon: 'warning', title: 'No Location', text: 'Please fetch your location.' });
         return;
       }
       
       document.getElementById('signupSpinner').style.display = 'block';
-  
-      // Check if a user with the same user_id or Aadhaar exists
-      let { data: existingUser, error: fetchError } = await supabaseClient
+      
+      let { data: existingUser } = await supabaseClient
         .from('users')
         .select('*')
         .or(`user_id.eq.${userId},aadhaar.eq.${aadhaar}`)
@@ -118,21 +155,23 @@
       
       if (existingUser) {
         document.getElementById('signupSpinner').style.display = 'none';
-        alert('User ID or Aadhaar already exists. Only one account per Aadhaar is allowed.');
+        Swal.fire({ icon: 'error', title: 'Account Exists', text: 'User ID or Aadhaar already exists.' });
         return;
       }
       
-      // Insert the new user into the database
       const { data, error } = await supabaseClient
         .from('users')
         .insert([{ user_id: userId, name, aadhaar, phone, email, password, location, reward_points: 0 }]);
+      
       document.getElementById('signupSpinner').style.display = 'none';
       
       if (error) {
-        alert('Error creating account: ' + error.message);
+        Swal.fire({ icon: 'error', title: 'Signup Error', text: error.message });
       } else {
-        alert('Account created successfully! Please login.');
-        window.location.href = 'index.html';
+        Swal.fire({ icon: 'success', title: 'Account Created', text: 'Account created successfully! Please login.' })
+          .then(() => {
+            window.location.href = 'index.html';
+          });
       }
     });
   </script>
