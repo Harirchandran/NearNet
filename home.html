@@ -11,9 +11,9 @@
   <style>
     /* Global resets and typography */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; color: #333; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; color: #333; transition: background 0.3s ease; }
     
-    /* Header styling */
+    /* Header */
     header {
       background: #2c3e50;
       color: #fff;
@@ -23,11 +23,118 @@
     }
     header h1 { font-size: 1.8rem; }
     header p { font-size: 0.9rem; margin-top: 0.3rem; opacity: 0.8; }
-
-    /* Container */
-    .container { max-width: 1200px; margin: 1rem auto; padding: 0 1rem; }
-
-    /* Tabs / Navigation bar at the bottom */
+    
+    /* Main container and sections */
+    .container { max-width: 1200px; margin: 70px auto 70px; padding: 0 1rem; } /* leave space for bottom nav */
+    .section { display: none; }
+    .section.active { display: block; }
+    
+    /* Home Section */
+    .welcome { margin: 1rem 0; font-size: 1.2rem; }
+    .dashboard {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease;
+    }
+    .dashboard:hover { transform: scale(1.01); }
+    .dashboard h3 {
+      margin-bottom: 0.8rem;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 0.5rem;
+      color: #2c3e50;
+      font-size: 1rem;
+    }
+    
+    /* Event Cards */
+    .event-card {
+      background: #fff;
+      padding: 0.8rem;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      margin-bottom: 0.8rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .event-card:hover { transform: translateY(-2px); box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
+    .event-card h4 { font-size: 0.95rem; margin-bottom: 0.3rem; color: #2c3e50; }
+    .event-card p { font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; }
+    .event-card .event-status {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 1rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    .status-active { background: #27ae60; color: #fff; }
+    .status-completed { background: #7f8c8d; color: #fff; }
+    .status-help { background: #e67e22; color: #fff; }
+    .time-remaining { font-weight: bold; color: #e74c3c; margin-left: 0.3rem; font-size: 0.8rem; }
+    .see-more-btn {
+      background: #3498db;
+      border: none;
+      color: #fff;
+      padding: 0.3rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .see-more-btn:hover { background: #2980b9; }
+    
+    /* Create Section */
+    .create-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .create-buttons button {
+      padding: 1rem;
+      font-size: 1rem;
+      background: #e67e22;
+      border: none;
+      color: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      justify-content: center;
+      transition: background 0.3s ease;
+    }
+    .create-buttons button:hover { background: #d35400; }
+    
+    /* Coins Section */
+    .coins-section {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      margin-top: 1rem;
+      transition: background 0.3s ease;
+    }
+    .coins-section h4 { margin-bottom: 0.5rem; color: #2c3e50; font-size: 1rem; }
+    
+    /* Profile Section */
+    .profile-section button {
+      display: block;
+      width: 100%;
+      margin: 0.5rem 0;
+      padding: 0.75rem;
+      border: none;
+      background: #3498db;
+      color: #fff;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .profile-section button:hover { background: #2980b9; }
+    
+    /* Bottom Navigation Bar */
     .bottom-nav {
       position: fixed;
       bottom: 0; left: 0; right: 0;
@@ -52,96 +159,19 @@
     }
     .bottom-nav button:hover { color: #3498db; }
     .bottom-nav i { font-size: 1.2rem; margin-bottom: 0.2rem; }
-
-    /* Main sections */
-    .section { display: none; }
-    .section.active { display: block; }
-
-    /* "Home" section */
-    .welcome { margin: 1rem 0; font-size: 1.2rem; }
-    .dashboard { background: #fff; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    .dashboard h3 { margin-bottom: 1rem; border-bottom: 2px solid #eee; padding-bottom: 0.5rem; color: #2c3e50; }
-
-    /* Event cards */
-    .event-card { background: #fff; padding: 1rem; border: 1px solid #eee; border-radius: 8px; margin-bottom: 1rem; transition: transform 0.2s; }
-    .event-card:hover { transform: translateY(-2px); box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
-    .event-card h4 { margin-bottom: 0.3rem; color: #2c3e50; font-size: 1rem; }
-    .event-card p { margin-bottom: 0.3rem; font-size: 0.85rem; color: #555; }
-    .event-card .event-status {
-      display: inline-block; padding: 0.25rem 0.75rem; border-radius: 1rem;
-      font-size: 0.75rem; font-weight: 500;
-    }
-    .status-active { background: #27ae60; color: #fff; }
-    .status-completed { background: #7f8c8d; color: #fff; }
-    .status-help { background: #e67e22; color: #fff; }
-    .time-remaining { font-weight: bold; color: #e74c3c; margin-left: 0.3rem; font-size: 0.8rem; }
-    .see-more-btn {
-      background: #3498db;
-      border: none;
-      color: #fff;
-      padding: 0.3rem 0.5rem;
-      border-radius: 4px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    .see-more-btn:hover { background: #2980b9; }
-
-    /* "Create" section with big buttons */
-    .create-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    .create-buttons button {
-      padding: 1rem;
-      font-size: 1rem;
-      background: #e67e22;
-      border: none;
-      color: #fff;
-      border-radius: 8px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      justify-content: center;
-      transition: background 0.3s ease;
-    }
-    .create-buttons button:hover { background: #d35400; }
-
-    /* "Coins" section */
-    .coins-section {
-      background: #fff; padding: 1rem; border-radius: 8px; text-align: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-top: 1.5rem;
-    }
-    .coins-section h4 { margin-bottom: 0.5rem; color: #2c3e50; }
-
-    /* "Profile" section */
-    .profile-section button {
-      display: block;
-      width: 100%;
-      margin-bottom: 1rem;
-      padding: 0.75rem;
-      border: none;
-      background: #3498db;
-      color: #fff;
-      border-radius: 4px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    .profile-section button:hover { background: #2980b9; }
-
-    /* Overlays, spinners, etc. */
+    
+    /* Overlays */
     .overlay {
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(0,0,0,0.5);
-      align-items: center; justify-content: center;
-      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      animation: fadeIn 0.3s ease;
     }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     .overlay-content {
       background: #fff;
       border-radius: 8px;
@@ -149,7 +179,9 @@
       max-width: 500px;
       width: 95%;
       position: relative;
+      animation: slideDown 0.3s ease;
     }
+    @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     .overlay-content button.close-overlay {
       position: absolute;
       top: 1rem;
@@ -159,6 +191,8 @@
       font-size: 1.5rem;
       cursor: pointer;
     }
+    
+    /* Spinner */
     .spinner {
       border: 4px solid #f3f3f3;
       border-top: 4px solid #3498db;
@@ -169,8 +203,15 @@
       margin: 1rem auto;
     }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-    /* Responsive adjustments for a more app-like feel */
+    
+    /* Urgent Warning Icon */
+    .urgent-warning {
+      color: red;
+      font-size: 1.2rem;
+      margin-left: 0.5rem;
+    }
+    
+    /* Mobile adjustments */
     @media (max-width:768px) {
       header h1 { font-size: 1.4rem; }
       header p { font-size: 0.8rem; }
@@ -179,9 +220,10 @@
       .bottom-nav i { font-size: 1rem; }
     }
   </style>
-   <!-- Include QR Scanner & QRCode generator libraries -->
-   <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
-   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  
+  <!-- Include QR Scanner & QRCode generator libraries -->
+  <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 </head>
 <body>
   <!-- Header -->
@@ -190,16 +232,16 @@
     <p>Network of nearest people</p>
   </header>
   
-  <!-- Main Container -->
+  <!-- Main Container with Sections -->
   <div class="container">
-    <!-- HOME SECTION -->
+    <!-- Home Section -->
     <div id="homeSection" class="section active">
       <div class="welcome" id="welcomeMessage">Welcome, User!</div>
       
-      <!-- Dashboard for available events -->
+      <!-- Available Events -->
       <div class="dashboard">
         <h3>Available Events</h3>
-        <div style="display:flex; gap:0.5rem; align-items:center; margin-bottom:1rem;">
+        <div class="radius-selector">
           <label for="radiusSelector">Show events within:</label>
           <select id="radiusSelector">
             <option value="1000">1 km</option>
@@ -212,7 +254,7 @@
         </div>
       </div>
       
-      <!-- Dashboard for events created by the user -->
+      <!-- Your Created Events -->
       <div class="dashboard">
         <h3>Your Created Events</h3>
         <div id="createdEventsList">
@@ -220,58 +262,47 @@
         </div>
       </div>
     </div>
-
-    <!-- CREATE SECTION -->
+    
+    <!-- Create Section -->
     <div id="createSection" class="section">
-      <h2 style="margin-top:1rem;">Create Events/Requests</h2>
+      <h2 style="margin-top:1rem; text-align:center;">Create Events / Requests</h2>
       <div class="create-buttons">
         <button id="askHelpBtn"><i class="fa-solid fa-hands-helping"></i> Ask Help</button>
         <button id="urgentEmergencyBtn"><i class="fa-solid fa-bell"></i> Urgent Emergency</button>
-        <button id="hostEventBtn"><i class="fa-solid fa-calendar-check"></i> Host Party/Events/Games</button>
-        <button id="exchangeBtn"><i class="fa-solid fa-arrows-rotate"></i> Exchange/Borrow Households</button>
+        <button id="hostEventBtn"><i class="fa-solid fa-calendar-check"></i> Host Event</button>
+        <button id="exchangeBtn"><i class="fa-solid fa-arrows-rotate"></i> Exchange/Borrow</button>
         <button id="onlineGamesBtn"><i class="fa-solid fa-gamepad"></i> Online Games</button>
       </div>
     </div>
-
-    <!-- COINS SECTION -->
+    
+    <!-- Coins Section -->
     <div id="coinsSection" class="section">
       <div class="coins-section">
         <h4>Nearnext Coins: <span id="rewardPoints">0</span></h4>
-        <p>Attend events to earn coins!</p>
+        <p>Earn coins by attending events!</p>
       </div>
     </div>
-
-    <!-- PROFILE SECTION -->
+    
+    <!-- Profile Section -->
     <div id="profileSection" class="section">
       <div class="profile-section" style="margin-top:1rem;">
-        <button id="myQRBtn"><i class="fa-solid fa-qrcode"></i> Show My QR</button>
+        <button id="myQRBtn"><i class="fa-solid fa-qrcode"></i> My QR</button>
+        <button id="editProfileBtn"><i class="fa-solid fa-user-pen"></i> Edit Profile</button>
         <button id="logoutBtn"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
       </div>
     </div>
   </div>
   
-  <!-- Bottom Nav -->
+  <!-- Bottom Navigation Bar -->
   <div class="bottom-nav">
-    <button data-section="homeSection">
-      <i class="fa-solid fa-home"></i>
-      <span>Home</span>
-    </button>
-    <button data-section="createSection">
-      <i class="fa-solid fa-plus-square"></i>
-      <span>Create</span>
-    </button>
-    <button data-section="coinsSection">
-      <i class="fa-solid fa-coins"></i>
-      <span>Coins</span>
-    </button>
-    <button data-section="profileSection">
-      <i class="fa-solid fa-user"></i>
-      <span>Profile</span>
-    </button>
+    <button data-section="homeSection"><i class="fa-solid fa-home"></i><span>Home</span></button>
+    <button data-section="createSection"><i class="fa-solid fa-plus-square"></i><span>Create</span></button>
+    <button data-section="coinsSection"><i class="fa-solid fa-coins"></i><span>Coins</span></button>
+    <button data-section="profileSection"><i class="fa-solid fa-user"></i><span>Profile</span></button>
   </div>
   
   <!-- Overlays -->
-  <!-- My QR Overlay -->
+  <!-- QR Code Overlay (My QR) -->
   <div class="overlay" id="qrOverlay">
     <div class="overlay-content">
       <button class="close-overlay" onclick="closeOverlay('qrOverlay')">&times;</button>
@@ -323,6 +354,24 @@
     </div>
   </div>
   
+  <!-- Edit Profile Overlay -->
+  <div class="overlay" id="editProfileOverlay">
+    <div class="overlay-content">
+      <button class="close-overlay" onclick="closeOverlay('editProfileOverlay')">&times;</button>
+      <h3>Edit Profile</h3>
+      <form id="editProfileForm">
+        <input type="text" id="editName" placeholder="Name" required />
+        <input type="text" id="editPhone" placeholder="Phone" required />
+        <input type="email" id="editEmail" placeholder="Email" required />
+        <input type="password" id="editPassword" placeholder="New Password (optional)" />
+        <input type="text" id="editLocation" placeholder="Location" readonly required />
+        <div class="location-display" id="editLocationDisplay">Fetching location...</div>
+        <button type="button" id="editGetLocationBtn"><i class="fa-solid fa-location-dot"></i> Get Location</button>
+        <button type="submit">Save Changes</button>
+      </form>
+    </div>
+  </div>
+  
   <!-- QR Scanner Overlay for "Mark Helped" -->
   <div class="overlay" id="qrScannerOverlay">
     <div class="overlay-content">
@@ -333,27 +382,26 @@
     </div>
   </div>
   
-  <!-- SweetAlert2 + Supabase + main JS logic -->
+  <!-- SweetAlert2 and Supabase JS -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   
   <script>
-    console.log("Script started.");
+    console.log("Home page script started.");
+    
+    // Supabase Client Initialization
     const SUPABASE_URL = 'https://elxyhkfuuugjskallwsp.supabase.co';
       const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVseHloa2Z1dXVnanNrYWxsd3NwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg4MjA5ODksImV4cCI6MjA1NDM5Njk4OX0.BAEvcCVIQiVdsg0m3xX72Xi0p-vnJ4WqfZU0mE_Tuk0';
    
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     
-    // currentUser from localStorage
+    // Retrieve currentUser from localStorage
     let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (!currentUser) {
-      window.location.href = 'index.html';
-    }
-    
+    if (!currentUser) { window.location.href = 'index.html'; }
     document.getElementById('welcomeMessage').textContent = `Welcome, ${currentUser.name}!`;
     document.getElementById('rewardPoints').textContent = currentUser.reward_points || 0;
-
-    // Bottom nav handling
+    
+    // Bottom Navigation: Switch Sections
     const bottomNavButtons = document.querySelectorAll('.bottom-nav button');
     const sections = document.querySelectorAll('.section');
     bottomNavButtons.forEach(btn => {
@@ -365,19 +413,6 @@
     });
 
 
-    
-    // 3. Update welcome message & coins
-    document.getElementById('welcomeMessage').textContent = `Welcome, ${currentUser.name}!`;
-    document.getElementById('rewardPoints').textContent = currentUser.reward_points || 0;
-    
-    // 3a. Logout functionality
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-      Swal.fire({ icon: 'success', title: 'Logged Out', text: 'You have been successfully logged out.' })
-      .then(() => {
-        localStorage.removeItem('currentUser');
-        window.location.href = 'index.html';
-      });
-    });
     
     // 3b. "My QR" button displays QR code for currentUser.user_id
     document.getElementById('myQRBtn').addEventListener('click', () => {
@@ -391,33 +426,42 @@
       });
     });
     
-    // 4. Update user location
-    async function requestAndUpdateLocation() {
-      if (navigator.geolocation) {
-        console.log("Requesting current location...");
-        const position = await new Promise((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(resolve, reject);
-        });
-        const lng = position.coords.longitude;
-        const lat = position.coords.latitude;
-        const point = `POINT(${lng} ${lat})`;
-        console.log("Current location:", point);
-        const { error } = await supabaseClient
-          .from('users')
-          .update({ location: point })
-          .eq('user_id', currentUser.user_id);
-        if (!error) {
-          currentUser.location = point;
-          localStorage.setItem('currentUser', JSON.stringify(currentUser));
-          console.log("Location updated in database and localStorage.");
-        } else {
-          console.error("Error updating location:", error.message);
+    // Realtime Subscriptions using Supabase Realtime (v2 channel API)
+    const eventsSubscription = supabaseClient
+      .channel('public:events')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'events' },
+        (payload) => {
+          console.log('Realtime event change:', payload);
+          loadEvents();
         }
-      }
-    }
-    requestAndUpdateLocation();
+      )
+      .subscribe();
     
-    // 5. Load events (Available & Your Created Events)
+    const coinSubscription = supabaseClient
+      .channel(`public:users_${currentUser.user_id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'users',
+          filter: `user_id=eq.${currentUser.user_id}`
+        },
+        (payload) => {
+          const newPoints = payload.new.reward_points;
+          if (newPoints > currentUser.reward_points) {
+            Swal.fire({ icon: 'success', title: 'Congratulations!', text: 'You got a new coin!' });
+          }
+          currentUser.reward_points = newPoints;
+          localStorage.setItem('currentUser', JSON.stringify(currentUser));
+          document.getElementById('rewardPoints').textContent = newPoints;
+        }
+      )
+      .subscribe();
+    
+    // Load Events Function (filters available events within selected radius)
     async function loadEvents() {
       console.log("Loading events...");
       const availableSpinner = document.getElementById('availableEventsSpinner');
@@ -426,41 +470,33 @@
       if (createdSpinner) createdSpinner.style.display = 'block';
       try {
         const radius = parseInt(document.getElementById('radiusSelector').value);
-        console.log("Radius:", radius);
-        
-        // "Available" events from RPC (including location as text)
+        // Call RPC 'nearby_events' (which returns location as text via ST_AsText)
         let { data: nearbyEvents, error: nearbyError } = await supabaseClient.rpc('nearby_events', {
           current_location: currentUser.location,
           max_distance: radius
         });
-        
-        // "Your Created Events" from a direct select
         let { data: myEvents, error: myEventsError } = await supabaseClient
           .from('events')
           .select('*')
           .eq('user_id', currentUser.user_id);
-        
         if (nearbyError || myEventsError) throw nearbyError || myEventsError;
         console.log("Events loaded:", nearbyEvents, myEvents);
-        
-        // Filter out your own events from "Available Events"
+        // Ensure nearbyEvents is not null
         const filteredNearby = (nearbyEvents || []).filter(e => e.user_id !== currentUser.user_id);
-        
         renderEvents(filteredNearby, 'availableEventsList', true);
         renderEvents(myEvents, 'createdEventsList', false);
         updateTimeRemaining();
-        clearUnusedUrgentIntervals(filteredNearby.map(e => e.id));
+        clearUnusedUrgentIntervals(filteredNearby.filter(e => e.event_type === 'urgent').map(e => e.id));
       } catch (error) {
         console.error("Error loading events:", error.message);
-        Swal.fire({ icon: 'error', title: 'Error', text: 'Failed to load events: ' + error.message });
+        Swal.fire({ icon: 'error', title: 'Error', text: error.message });
       } finally {
         if (availableSpinner) availableSpinner.style.display = 'none';
         if (createdSpinner) createdSpinner.style.display = 'none';
       }
     }
-    setInterval(loadEvents, 10000); // auto-refresh every 10 seconds
     
-    // 6. Event status logic
+    // Event Status: returns 'active', 'expired', or 'completed'
     function getEventStatus(event) {
       if (!event.status) return 'completed';
       if (!event.end_time) return 'active';
@@ -469,11 +505,19 @@
       return now > endTime ? 'expired' : 'active';
     }
     
-    // Global sets & maps for vibration control
-    const vibratedEventIds = new Set(); // for one-time vibration on non-urgent events
-    const urgentVibrationIntervals = {}; // map of event.id -> intervalID
+    // Vibration Logic: non-urgent events vibrate once; urgent events vibrate continuously
+    let vibratedEventIds = new Set();
+    let urgentVibrationIntervals = {};
+    function clearUnusedUrgentIntervals(renderedUrgentIds) {
+      for (let id in urgentVibrationIntervals) {
+        if (!renderedUrgentIds.includes(Number(id))) {
+          clearInterval(urgentVibrationIntervals[id]);
+          delete urgentVibrationIntervals[id];
+        }
+      }
+    }
     
-    // 7. Render events; isAvailableList: if true, add "Get Directions" button and extra urgent logic
+    // Render Events into given container; isAvailableList adds "Get Directions" button
     function renderEvents(events, containerId, isAvailableList) {
       const container = document.getElementById(containerId);
       container.innerHTML = '';
@@ -487,38 +531,27 @@
         
         let eventLabel = '';
         let timerHTML = '';
-        
-        // For urgent events in the available list, vibrate continuously if pending
         if (isAvailableList && event.event_type === 'urgent') {
           eventLabel = ' <span class="urgent-warning"><i class="fa-solid fa-exclamation-triangle"></i></span> [Urgent]';
-          // Start continuous vibration for urgent events (if not already started)
           if (!urgentVibrationIntervals[event.id]) {
             urgentVibrationIntervals[event.id] = setInterval(() => {
-              if (navigator.vibrate) {
-                navigator.vibrate(200);
-              }
+              if (navigator.vibrate) { navigator.vibrate(200); }
             }, 5000);
           }
         } else if (event.event_type === 'help') {
           eventLabel = ' [Help Request]';
-        } else {
-          eventLabel = '';
         }
-        
-        // For all non-urgent events, vibrate one time when rendered (if not done already)
         if (event.event_type !== 'urgent' && !vibratedEventIds.has(event.id) && navigator.vibrate) {
           navigator.vibrate(200);
           vibratedEventIds.add(event.id);
         }
-        
         if (event.end_time) {
           timerHTML = `<span class="time-remaining" data-endtime="${event.end_time}"></span>`;
         }
-        
         card.innerHTML = `
           <h4>${event.title}${eventLabel} ${timerHTML}</h4>
-          <p>${event.description || ''}</p>
-          <div style="margin-top:0.5rem; display:flex; gap:0.5rem; align-items:center;">
+          <p>${event.description ? event.description.slice(0, 60) + '...' : ''}</p>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
             <span class="event-status ${
               getEventStatus(event) === 'active'
                 ? (event.event_type === 'help' ? 'status-help' : 'status-active')
@@ -526,23 +559,16 @@
             }">
               ${getEventStatus(event) === 'active' ? (event.event_type === 'help' ? 'Help' : 'Active') : 'Completed'}
             </span>
-            <small>${(event.distance / 1000).toFixed(1)} km away</small>
+            <small>${(event.distance/1000).toFixed(1)} km away</small>
           </div>
+          <button class="see-more-btn" style="margin-top:0.5rem;">See More</button>
+          ${isAvailableList ? `<button class="get-direction-btn" style="margin-top:0.5rem;"><i class="fa-solid fa-location-dot"></i> Get Directions</button>` : ''}
         `;
-        
-        // If available event, add "Get Directions" button
-        if (isAvailableList) {
-          card.innerHTML += `<button class="get-direction-btn"><i class="fa-solid fa-location-dot"></i> Get Directions</button>`;
-        }
-        
-        card.addEventListener('click', () => {
-          console.log("Event card clicked, eventId:", event.id);
+        const seeMoreBtn = card.querySelector('.see-more-btn');
+        seeMoreBtn.addEventListener('click', (evt) => {
+          evt.stopPropagation();
           showEventDetails(event.id);
         });
-        
-        container.appendChild(card);
-        
-        // Wire up the "Get Directions" button if in available events list
         if (isAvailableList) {
           const dirBtn = card.querySelector('.get-direction-btn');
           if (dirBtn) {
@@ -552,26 +578,20 @@
             });
           }
         }
+        card.addEventListener('click', () => {
+          showEventDetails(event.id);
+        });
+        container.appendChild(card);
       });
     }
     
-    // Clear intervals for urgent events that are no longer in the current list
-    function clearUnusedUrgentIntervals(renderedUrgentIds) {
-      for (let id in urgentVibrationIntervals) {
-        if (!renderedUrgentIds.includes(Number(id))) {
-          clearInterval(urgentVibrationIntervals[id]);
-          delete urgentVibrationIntervals[id];
-        }
-      }
-    }
-    
-    // 7b. Timer updates every second
+    // Update timers every second
     function updateTimeRemaining() {
       const timeElements = document.querySelectorAll('.time-remaining');
       timeElements.forEach(el => {
         const endTime = new Date(el.getAttribute('data-endtime'));
         const now = new Date();
-        let diff = endTime - now;
+        const diff = endTime - now;
         if (diff < 0) {
           el.textContent = ' (Expired)';
         } else {
@@ -581,9 +601,8 @@
         }
       });
     }
-    setInterval(updateTimeRemaining, 1000);
     
-    // 7c. Get Directions: parse event.location (e.g., "POINT(lng lat)") and open Google Maps
+    // Get Directions: parse event.location ("POINT(lng lat)") and open Google Maps
     function getDirectionsForEvent(event) {
       if (!event.location) {
         Swal.fire({ icon: 'error', title: 'No Location', text: 'This event has no valid location data.' });
@@ -594,15 +613,13 @@
         Swal.fire({ icon: 'error', title: 'Invalid Location', text: 'Could not parse event location.' });
         return;
       }
-      const lng = match[1];
-      const lat = match[3];
+      const lng = match[1], lat = match[3];
       const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
       window.open(googleMapsUrl, '_blank');
     }
     
-    // 8. Show event details overlay with appropriate controls
+    // Show Event Details Overlay
     async function showEventDetails(eventId) {
-      console.log("Showing details for eventId:", eventId);
       try {
         const { data: event, error } = await supabaseClient
           .from('events')
@@ -610,11 +627,9 @@
           .eq('id', eventId)
           .single();
         if (error) throw error;
-        
         let content = `<h3>${event.title}</h3>
                        <p>${event.description || 'No details provided.'}</p>
                        <p>Status: ${getEventStatus(event)}</p>`;
-        
         if (event.event_type === 'help' || event.event_type === 'urgent') {
           const { data: participant } = await supabaseClient
             .from('event_participants')
@@ -625,9 +640,8 @@
           if (!participant && event.user_id !== currentUser.user_id && event.status) {
             content += `<button id="registerBtn">I Can Help</button>`;
           } else if (participant) {
-            content += `<p>You are already registered for this request.</p>`;
+            content += `<p>You are already registered.</p>`;
           }
-          
           if (event.user_id === currentUser.user_id) {
             const { data: participants } = await supabaseClient
               .from('event_participants')
@@ -646,60 +660,74 @@
             content += `<button id="endHelpBtn">End Help Request</button>`;
           }
         }
-        
         document.getElementById('eventDetailsContent').innerHTML = content;
         document.getElementById('eventDetailsOverlay').style.display = 'flex';
         
-        if (document.getElementById('registerBtn')) {
-          document.getElementById('registerBtn').addEventListener('click', async () => {
-            console.log("Register button clicked for eventId:", eventId);
+        const registerBtn = document.getElementById('registerBtn');
+        if (registerBtn) {
+          registerBtn.addEventListener('click', async () => {
             try {
               const { error: regError } = await supabaseClient
                 .from('event_participants')
                 .insert([{ event_id: eventId, user_id: currentUser.user_id }]);
               if (regError) throw regError;
-              Swal.fire({ icon: 'success', title: 'Registered', text: 'You have registered for this request.' });
+              Swal.fire({ icon: 'success', title: 'Registered', text: 'You have registered for this event.' });
               closeOverlay('eventDetailsOverlay');
               loadEvents();
-            } catch (regErr) {
-              Swal.fire({ icon: 'error', title: 'Registration Error', text: regErr.message });
+            } catch (err) {
+              Swal.fire({ icon: 'error', title: 'Registration Error', text: err.message });
             }
           });
         }
         
-        if (document.getElementById('markHelpedBtn')) {
-          document.getElementById('markHelpedBtn').addEventListener('click', () => {
-            console.log("Mark Helped button clicked for eventId:", eventId);
+        const markHelpedBtn = document.getElementById('markHelpedBtn');
+        if (markHelpedBtn) {
+          markHelpedBtn.addEventListener('click', () => {
+            // Fix 2: Check for currentEventIdForMarking existence
+            if (!window.currentEventIdForMarking) {
+              Swal.fire({ icon: 'error', title: 'Error', text: 'No event selected' });
+              return;
+            }
             window.currentEventIdForMarking = eventId;
             document.getElementById('qrScannerOverlay').style.display = 'flex';
             startScanner();
           });
         }
         
-        if (document.getElementById('endHelpBtn')) {
-          document.getElementById('endHelpBtn').addEventListener('click', async () => {
-            console.log("End Help Request clicked for eventId:", eventId);
-            try {
-              const { error: endError } = await supabaseClient
-                .from('events')
-                .update({ status: false })
-                .eq('id', eventId);
-              if (endError) throw endError;
-              Swal.fire({ icon: 'success', title: 'Help Ended', text: 'Your request has been ended.' });
-              closeOverlay('eventDetailsOverlay');
-              loadEvents();
-            } catch (endErr) {
-              Swal.fire({ icon: 'error', title: 'Error', text: endErr.message });
-            }
+        const endHelpBtn = document.getElementById('endHelpBtn');
+        if (endHelpBtn) {
+          endHelpBtn.addEventListener('click', () => {
+            Swal.fire({
+              title: 'End Event',
+              text: 'Are you sure you want to end this event?',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonText: 'Yes, end it!',
+              cancelButtonText: 'Cancel'
+            }).then(async (result) => {
+              if (result.isConfirmed) {
+                try {
+                  const { error: endError } = await supabaseClient
+                    .from('events')
+                    .update({ status: false })
+                    .eq('id', eventId);
+                  if (endError) throw endError;
+                  Swal.fire({ icon: 'success', title: 'Event Ended', text: 'The event has been ended.' });
+                  closeOverlay('eventDetailsOverlay');
+                  loadEvents();
+                } catch (err) {
+                  Swal.fire({ icon: 'error', title: 'Error', text: err.message });
+                }
+              }
+            });
           });
         }
       } catch (err) {
-        console.error("Error in showEventDetails:", err);
         Swal.fire({ icon: 'error', title: 'Error', text: err.message });
       }
     }
     
-    // 9. Close overlay helper
+    // Close Overlay (Fix 1: reset QR scanner variable)
     function closeOverlay(id) {
       const overlay = document.getElementById(id);
       if (overlay) {
@@ -708,16 +736,28 @@
           document.getElementById('qrCodeContainer').innerHTML = '';
         }
         if (id === 'qrScannerOverlay' && html5QrcodeScanner) {
-          html5QrcodeScanner.clear().catch(error => {
-            console.error('Scanner cleanup error:', error);
-          });
+          html5QrcodeScanner.clear().catch(error => { console.error(error); });
           html5QrcodeScanner = null;
         }
       }
     }
     
-    // 10. QR Scanner Setup
+    // QR Scanner Setup
     let html5QrcodeScanner = null;
+    function ensureHtml5QrcodeLibrary(callback) {
+      if (window.Html5Qrcode) {
+        callback();
+      } else {
+        const script = document.createElement("script");
+        script.src = "https://cdn.jsdelivr.net/npm/html5-qrcode/minified/html5-qrcode.min.js";
+        script.onload = () => { callback(); };
+        script.onerror = () => {
+          Swal.fire({ icon: "error", title: "QR Scanner Error", text: "Failed to load QR scanner library." });
+        };
+        document.head.appendChild(script);
+      }
+    }
+    
     function startScanner() {
       ensureHtml5QrcodeLibrary(() => {
         let scanTypes = null;
@@ -727,41 +767,42 @@
           scanTypes = [window.Html5QrcodeScanType.SCAN_TYPE_CAMERA];
         }
         const config = { fps: 10, qrbox: 250 };
-        if (scanTypes) {
-          config.supportedScanTypes = scanTypes;
-        } else {
-          console.warn("No supportedScanTypes defined; using default scanner settings.");
-        }
+        if (scanTypes) { config.supportedScanTypes = scanTypes; }
+        else { console.warn("No supportedScanTypes defined; using default settings."); }
         if (!html5QrcodeScanner) {
           html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", config);
           html5QrcodeScanner.render(onScanSuccess, onScanFailure);
         }
       });
     }
+    
     function stopScanner() {
       if (html5QrcodeScanner) {
-        html5QrcodeScanner.clear().catch(error => {
-          console.error("Scanner cleanup error:", error);
-        });
+        html5QrcodeScanner.clear().catch(error => { console.error("Scanner cleanup error:", error); });
         html5QrcodeScanner = null;
       }
     }
+    
     function onScanSuccess(decodedText, decodedResult) {
-      console.log("QR scan successful, decodedText:", decodedText);
       stopScanner();
       processMarkHelp(decodedText);
     }
+    
     function onScanFailure(error) {
       console.log("QR scan failure:", error);
     }
+    
     document.getElementById('stopScannerBtn').addEventListener('click', () => {
       stopScanner();
       closeOverlay('qrScannerOverlay');
     });
     
-    // 11. Process marking volunteer as helped
+    // Process Mark Help (Fix 2: check if currentEventIdForMarking exists)
     async function processMarkHelp(volunteerId) {
-      console.log("Processing mark helped for volunteerId:", volunteerId);
+      if (!window.currentEventIdForMarking) {
+        Swal.fire({ icon: 'error', title: 'Error', text: 'No event selected' });
+        return;
+      }
       const eventId = window.currentEventIdForMarking;
       const { data: participant } = await supabaseClient
         .from('event_participants')
@@ -805,7 +846,8 @@
       loadEvents();
     }
     
-    // 12. Ask Help overlay functionality
+
+
     document.getElementById('askHelpBtn').addEventListener('click', () => {
       console.log("Ask Help button clicked.");
       document.getElementById('helpLocation').value = currentUser.location;
@@ -948,11 +990,89 @@
       console.log("Radius changed, reloading events...");
       loadEvents();
     });
+
+
+
+
+
+
+
+    // Profile Edit: Show Edit Profile Overlay
+    document.getElementById('editProfileBtn').addEventListener('click', () => {
+      document.getElementById('editProfileOverlay').style.display = 'flex';
+      document.getElementById('editName').value = currentUser.name;
+      document.getElementById('editPhone').value = currentUser.phone;
+      document.getElementById('editEmail').value = currentUser.email;
+      document.getElementById('editLocation').value = currentUser.location;
+    });
     
-    // 16. Initial load of events
+    // Edit Profile: Get Location for profile editing
+    document.getElementById('editGetLocationBtn').addEventListener('click', () => {
+      if (navigator.geolocation) {
+        Swal.fire({ title: 'Fetching Location', text: 'Please wait...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+        navigator.geolocation.getCurrentPosition(position => {
+          const lng = position.coords.longitude;
+          const lat = position.coords.latitude;
+          const point = `POINT(${lng} ${lat})`;
+          document.getElementById('editLocation').value = point;
+          document.getElementById('editLocationDisplay').textContent = 'Location: ' + point;
+          Swal.close();
+        }, error => {
+          Swal.close();
+          Swal.fire({ icon: 'error', title: 'Location Error', text: 'Unable to fetch location. Please try again.' });
+        });
+      } else {
+        Swal.fire({ icon: 'error', title: 'Not Supported', text: 'Geolocation is not supported by your browser.' });
+      }
+    });
+    
+    // Edit Profile: Submit changes; if new password is provided, validate length (Fix 4)
+    document.getElementById('editProfileForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const newName = document.getElementById('editName').value.trim();
+      const newPhone = document.getElementById('editPhone').value.trim();
+      const newEmail = document.getElementById('editEmail').value.trim();
+      const newPassword = document.getElementById('editPassword').value;
+      const newLocation = document.getElementById('editLocation').value;
+      
+      if (newPassword && newPassword.length < 6) {
+        Swal.fire({ icon: 'error', title: 'Error', text: 'Password must be at least 6 characters' });
+        return;
+      }
+      
+      try {
+        const updateData = { name: newName, phone: newPhone, email: newEmail, location: newLocation };
+        if (newPassword) { updateData.password = newPassword; }
+        const { error } = await supabaseClient
+          .from('users')
+          .update(updateData)
+          .eq('user_id', currentUser.user_id);
+        if (error) throw error;
+        Swal.fire({ icon: 'success', title: 'Profile Updated', text: 'Your profile has been updated. Please log in again.' })
+          .then(() => {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+          });
+      } catch (err) {
+        Swal.fire({ icon: 'error', title: 'Error', text: err.message });
+      }
+    });
+    
+    // Logout (Profile Section & Bottom Nav already wired)
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      Swal.fire({ icon: 'success', title: 'Logged Out', text: 'You have been successfully logged out.' })
+      .then(() => {
+        localStorage.removeItem('currentUser');
+        window.location.href = 'index.html';
+      });
+    });
+    
+    // "My QR" in Profile Section already wired above in bottom nav
+    
+    // Periodically load events via realtime subscriptions (no polling needed)
     loadEvents();
     
-    // 17. Global error handler
+    // Global error handler
     window.addEventListener('error', (event) => {
       Swal.fire({
         icon: 'error',
@@ -962,53 +1082,13 @@
       });
     });
     
-    // 18. Periodic coin update every 5 seconds
-    async function updateCoins() {
-      try {
-        const { data, error } = await supabaseClient
-          .from('users')
-          .select('reward_points')
-          .eq('user_id', currentUser.user_id)
-          .single();
-        if (error || !data) {
-          console.error("Error fetching coins:", error);
-          return;
-        }
-        const newPoints = data.reward_points;
-        if (newPoints > currentUser.reward_points) {
-          Swal.fire({ icon: 'success', title: 'Congratulations!', text: `You got a new coin!` });
-        }
-        currentUser.reward_points = newPoints;
-        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        document.getElementById('rewardPoints').textContent = newPoints;
-      } catch (err) {
-        console.error("Error updating coins:", err);
-      }
-    }
-    setInterval(updateCoins, 5000);
-    
-    // 19. Helper to ensure html5-qrcode library is loaded
-    function ensureHtml5QrcodeLibrary(callback) {
-      if (window.Html5Qrcode) {
-        callback();
-      } else {
-        const script = document.createElement("script");
-        script.src = "https://cdn.jsdelivr.net/npm/html5-qrcode/minified/html5-qrcode.min.js";
-        script.onload = () => {
-          console.log("html5-qrcode library loaded successfully.");
-          callback();
-        };
-        script.onerror = () => {
-          console.error("Failed to load html5-qrcode library.");
-          Swal.fire({ icon: "error", title: "QR Scanner Error", text: "Failed to load html5-qrcode library." });
-        };
-        document.head.appendChild(script);
-      }
-    }
-    
-  
-    
-
+    // Cleanup on unload (Fix 5: clear vibration intervals and unsubscribe)
+    window.addEventListener('beforeunload', () => {
+      Object.values(urgentVibrationIntervals).forEach(clearInterval);
+      urgentVibrationIntervals = {};
+      supabaseClient.removeSubscription(eventsSubscription);
+      supabaseClient.removeSubscription(coinSubscription);
+    });
   </script>
 </body>
 </html>
