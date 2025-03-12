@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nearnet.in - Home</title>
+  <style>
+    /* Global resets and typography */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; color: #333; }
+    
+    /* Header styling */
+    header { 
+      background: #2c3e50; 
+      color: #fff; 
+      padding: 1rem; 
+      position: relative; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+    }
+    header h1 { font-size: 1.8rem; }
+    .header-buttons {
+      position: absolute;
+      right: 1rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+    .header-buttons button {
+      padding: 0.5rem 1rem;
+      border: none;
+      background: #3498db;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    /* Container and dashboard */
+    .container { max-width: 1200px; margin: 1rem auto; padding: 0 1rem; }
+    .welcome { margin: 1rem 0; font-size: 1.4rem; }
+    .dashboard { background: #fff; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .dashboard h3 { margin-bottom: 1rem; border-bottom: 2px solid #eee; padding-bottom: 0.5rem; color: #2c3e50; }
+    
+    /* Radius selector */
+    .radius-selector { margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    
+    /* Event cards */
+    .event-card { background: #fff; padding: 1rem; border: 1px solid #eee; border-radius: 8px; margin-bottom: 1rem; transition: transform 0.2s; }
+    .event-card:hover { transform: translateY(-2px); box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
+    .event-card h4 { margin-bottom: 0.5rem; color: #2c3e50; }
+    .event-card .event-status {
+      display: inline-block; padding: 0.25rem 0.75rem; border-radius: 1rem;
+      font-size: 0.85rem; font-weight: 500;
+    }
+    .status-active { background: #27ae60; color: #fff; }
+    .status-completed { background: #7f8c8d; color: #fff; }
+    .status-help { background: #e67e22; color: #fff; }
+    .tick { color: green; font-weight: bold; }
+    .time-remaining { font-weight: bold; color: #e74c3c; margin-left: 0.5rem; }
+    
+    /* Action Buttons */
+    .action-buttons { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
+    .action-buttons button {
+      flex: 1 1 180px; padding: 0.75rem 1rem; border: none; border-radius: 4px;
+      background: #e67e22; color: #fff; cursor: pointer; transition: background 0.2s;
+    }
+    .action-buttons button:hover { background: #d35400; }
+    
+    /* Nearnext Coins Section */
+    .coins-section {
+      background: #fff; padding: 1rem; border-radius: 8px; text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 1.5rem;
+    }
+    .coins-section h4 { margin-bottom: 0.5rem; color: #2c3e50; }
+    
+    /* Overlay styles */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      align-items: center; justify-content: center;
+      z-index: 1000;
+    }
+    .overlay-content {
+      background: #fff;
+      border-radius: 8px;
+      padding: 1.5rem;
+      max-width: 500px;
+      width: 95%;
+      position: relative;
+    }
+    .overlay-content button.close-overlay {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    /* Ask Help Form styles */
+    .ask-help-form input,
+    .ask-help-form textarea,
+    .ask-help-form select {
+      width: 100%;
+      padding: 10px;
+      margin: 0.5rem 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .ask-help-form button {
+      padding: 10px 20px;
+      background: #3498db;
+      border: none;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    /* QR Scanner Overlay styles */
+    .qr-scanner-container {
+      width: 100%;
+      height: 300px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+    .qr-scanner-form button {
+      padding: 10px 20px;
+      background: #2ecc71;
+      border: none;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    /* Urgent Emergency Form styles */
+    .urgent-emergency-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 0.5rem 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .urgent-emergency-form button {
+      padding: 10px 20px;
+      background: #e74c3c;
+      border: none;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    
+    /* Spinner */
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 1rem auto;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    
+    /* Red Dot / Warning Icon for urgent events */
+    .urgent-warning {
+      color: red;
+      font-weight: bold;
+      margin-left: 0.5rem;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width:768px) {
+      header h1 { font-size: 1.6rem; }
+      .header-buttons { position: static; margin-top: 1rem; justify-content: center; }
+      .container { padding: 0 0.5rem; }
+      .action-buttons { flex-direction: column; }
+    }
+  </style>
+  <!-- Include QR Scanner & QRCode generator libraries -->
+  <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+  <!-- Header with site name and top-right buttons -->
+  <header>
+    <h1>nearnet.in</h1>
+    <div class="header-buttons">
+      <button id="myQRBtn">My QR</button>
+      <button id="logoutBtn">Logout</button>
+    </div>
+  </header>
+  
+  <div class="container">
+    <!-- Welcome message and reward coins -->
+    <div class="welcome" id="welcomeMessage">Welcome, User!</div>
+    
+    <!-- Dashboard for available events -->
+    <div class="dashboard" id="availableEventsDashboard">
+      <h3>Available Events</h3>
+      <div class="radius-selector">
+        <label for="radiusSelector">Show events within:</label>
+        <select id="radiusSelector">
+          <option value="1000">1 km</option>
+          <option value="3000">3 km</option>
+          <option value="5000">5 km</option>
+        </select>
+      </div>
+      <div id="availableEventsList">
+        <div class="spinner" id="availableEventsSpinner"></div>
+      </div>
+    </div>
+    
+    <!-- Dashboard for events created by the user -->
+    <div class="dashboard" id="createdEventsDashboard">
+      <h3>Your Created Events</h3>
+      <div id="createdEventsList">
+        <div class="spinner" id="createdEventsSpinner"></div>
+      </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button id="askHelpBtn">Ask Help</button>
+      <button id="urgentEmergencyBtn">Urgent Emergency</button>
+      <button id="hostEventBtn">Host Party/Events/Games</button>
+      <button id="exchangeBtn">Exchange/Borrow Households</button>
+      <button id="onlineGamesBtn">Online Games</button>
+    </div>
+    
+    <!-- Nearnext Coins Section -->
+    <div class="coins-section">
+      <h4>Nearnext Coins: <span id="rewardPoints">0</span></h4>
+      <p>Attend events to earn coins!</p>
+    </div>
+  </div>
+  
+  <!-- QR Code Overlay (My QR) -->
+  <div class="overlay" id="qrOverlay">
+    <div class="overlay-content">
+      <button class="close-overlay" onclick="closeOverlay('qrOverlay')">&times;</button>
+      <h3>Your QR Code</h3>
+      <div id="qrCodeContainer" style="text-align:center;"></div>
+    </div>
+  </div>
+  
+  <!-- Event Details Overlay -->
+  <div class="overlay" id="eventDetailsOverlay">
+    <div class="overlay-content">
+      <button class="close-overlay" onclick="closeOverlay('eventDetailsOverlay')">&times;</button>
+      <div id="eventDetailsContent"></div>
+    </div>
+  </div>
+  
+  <!-- Ask Help Overlay -->
+  <div class="overlay" id="askHelpOverlay">
+    <div class="overlay-content">
+      <button class="close-overlay" onclick="closeOverlay('askHelpOverlay')">&times;</button>
+      <h3>Ask for Help</h3>
+      <form id="askHelpForm" class="ask-help-form">
+        <textarea id="helpDetails" placeholder="Describe what help you need" required></textarea>
+        <input type="number" id="volunteersNeeded" placeholder="Number of volunteers needed" required min="1" />
+        <input type="text" id="helpLocation" placeholder="Help Location" readonly required />
+        <button type="button" id="updateHelpLocationBtn">Update Location</button>
+        <label for="helpExpireTime">Expire Time:</label>
+        <select id="helpExpireTime">
+          <option value="3600">1 Hour</option>
+          <option value="10800">3 Hours</option>
+          <option value="21600">6 Hours</option>
+          <option value="43200">12 Hours</option>
+          <option value="86400">24 Hours</option>
+        </select>
+        <button type="submit">Submit Help Request</button>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Urgent Emergency Overlay with Voice Recognition -->
+  <div class="overlay" id="urgentEmergencyOverlay">
+    <div class="overlay-content">
+      <button class="close-overlay" onclick="closeOverlay('urgentEmergencyOverlay')">&times;</button>
+      <h3>Urgent Emergency</h3>
+      <p>Please record your emergency message. Click "Record Voice" to start.</p>
+      <textarea id="emergencyVoiceMsg" placeholder="Transcribed message will appear here" readonly style="height:80px;"></textarea>
+      <button id="recordVoiceBtn">Record Voice</button>
+      <button id="submitEmergencyBtn">Submit Emergency</button>
+    </div>
+  </div>
+  
+  <!-- QR Scanner Overlay for "Mark Helped" -->
+  <div class="overlay" id="qrScannerOverlay">
+    <div class="overlay-content">
+      <button class="close-overlay" onclick="closeOverlay('qrScannerOverlay')">&times;</button>
+      <h3>Scan Volunteer QR</h3>
+      <div id="qr-reader" class="qr-scanner-container"></div>
+      <button id="stopScannerBtn">Stop Scanner</button>
+    </div>
+  </div>
+  
+  <!-- SweetAlert2 + Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <script>
+    console.log("Script started.");
+    
+    // 1. Supabase Client Initialization
+    const SUPABASE_URL = 'https://elxyhkfuuugjskallwsp.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVseHloa2Z1dXVnanNrYWxsd3NwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg4MjA5ODksImV4cCI6MjA1NDM5Njk4OX0.BAEvcCVIQiVdsg0m3xX72Xi0p-vnJ4WqfZU0mE_Tuk0';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log("Supabase client initialized.");
+    
+    // 2. currentUser from localStorage
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentUser) {
+      console.error("No currentUser found, redirecting.");
+      window.location.href = 'index.html';
+    }
+    
+    // 3. Welcome message & coins
+    document.getElementById('welcomeMessage').textContent = `Welcome, ${currentUser.name}!`;
+    document.getElementById('rewardPoints').textContent = currentUser.reward_points || 0;
+    
+    // 3a. Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      Swal.fire({ icon: 'success', title: 'Logged Out', text: 'You have been successfully logged out.' })
+      .then(() => {
+        localStorage.removeItem('currentUser');
+        window.location.href = 'index.html';
+      });
+    });
+    
+    // 3b. "My QR" - show an overlay with user_id as QR code
+    document.getElementById('myQRBtn').addEventListener('click', () => {
+      document.getElementById('qrOverlay').style.display = 'flex';
+      const qrContainer = document.getElementById('qrCodeContainer');
+      qrContainer.innerHTML = ''; // clear any old code
+      new QRCode(qrContainer, {
+        text: currentUser.user_id,
+        width: 128,
+        height: 128
+      });
+    });
+    
+    // 4. Update user location
+    async function requestAndUpdateLocation() {
+      if (navigator.geolocation) {
+        console.log("Requesting current location...");
+        const position = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
+        const lng = position.coords.longitude;
+        const lat = position.coords.latitude;
+        const point = `POINT(${lng} ${lat})`;
+        console.log("Current location:", point);
+        const { error } = await supabaseClient
+          .from('users')
+          .update({ location: point })
+          .eq('user_id', currentUser.user_id);
+        if (!error) {
+          currentUser.location = point;
+          localStorage.setItem('currentUser', JSON.stringify(currentUser));
+          console.log("Location updated in database and localStorage.");
+        } else {
+          console.error("Error updating location:", error.message);
+        }
+      }
+    }
+    requestAndUpdateLocation();
+    
+    // 5. Load events
+    async function loadEvents() {
+      console.log("Loading events...");
+      const availableSpinner = document.getElementById('availableEventsSpinner');
+      const createdSpinner = document.getElementById('createdEventsSpinner');
+      if (availableSpinner) availableSpinner.style.display = 'block';
+      if (createdSpinner) createdSpinner.style.display = 'block';
+      try {
+        const radius = parseInt(document.getElementById('radiusSelector').value);
+        console.log("Radius:", radius);
+        
+        // "Available" events from RPC
+        let { data: nearbyEvents, error: nearbyError } = await supabaseClient.rpc('nearby_events', {
+          current_location: currentUser.location,
+          max_distance: radius
+        });
+        
+        // "Your Created Events" from a direct select
+        let { data: myEvents, error: myEventsError } = await supabaseClient
+          .from('events')
+          .select('*')
+          .eq('user_id', currentUser.user_id);
+        
+        if (nearbyError || myEventsError) throw nearbyError || myEventsError;
+        console.log("Events loaded:", nearbyEvents, myEvents);
+        
+        // Filter out your own events from "available"
+        const filteredNearby = (nearbyEvents || []).filter(e => e.user_id !== currentUser.user_id);
+        
+        renderEvents(filteredNearby, 'availableEventsList', true);
+        renderEvents(myEvents, 'createdEventsList', false);
+        updateTimeRemaining();
+      } catch (error) {
+        console.error("Error loading events:", error.message);
+        Swal.fire({ icon: 'error', title: 'Error', text: 'Failed to load events: ' + error.message });
+      } finally {
+        if (availableSpinner) availableSpinner.style.display = 'none';
+        if (createdSpinner) createdSpinner.style.display = 'none';
+      }
+    }
+    setInterval(loadEvents, 10000); // auto-refresh
+    
+    // 6. Event status logic
+    function getEventStatus(event) {
+      // If the event has 'status' == false, it's completed
+      if (!event.status) return 'completed';
+      // If there's no end_time, treat as 'active'
+      if (!event.end_time) return 'active';
+      
+      const now = new Date();
+      const endTime = new Date(event.end_time);
+      return now > endTime ? 'expired' : 'active';
+    }
+    
+    // 7. Render events
+    // "isAvailableList" param to show "Get Directions" button if true
+    function renderEvents(events, containerId, isAvailableList) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      if (!events || events.length === 0) {
+        container.innerHTML = '<p>No events found.</p>';
+        return;
+      }
+      events.forEach(event => {
+        const card = document.createElement('div');
+        card.className = 'event-card';
+        
+        let eventLabel = '';
+        let timerHTML = '';
+        
+        // If urgent, show a warning symbol & repeated vibration
+        if (event.event_type === 'urgent') {
+          // Add an urgent label
+          eventLabel = ' <span class="urgent-warning">\u26A0</span> [Urgent]';
+          // Vibrate repeatedly (simple approach)
+          if (navigator.vibrate) {
+            navigator.vibrate([200, 100, 200]);
+          }
+        } else if (event.event_type === 'help') {
+          eventLabel = ' [Help Request]';
+        }
+        
+        // Show a timer if there's an end_time
+        if (event.end_time) {
+          timerHTML = `<span class="time-remaining" data-endtime="${event.end_time}"></span>`;
+        }
+        
+        card.innerHTML = `
+          <h4>${event.title}${eventLabel} ${timerHTML}</h4>
+          <p>${event.description || ''}</p>
+          <div style="margin-top:0.5rem; display:flex; gap:0.5rem; align-items:center;">
+            <span class="event-status ${
+              getEventStatus(event) === 'active'
+                ? (event.event_type === 'help' ? 'status-help' : 'status-active')
+                : 'status-completed'
+            }">
+              ${
+                getEventStatus(event) === 'active'
+                  ? (event.event_type === 'help' ? 'Help' : 'Active')
+                  : 'Completed'
+              }
+            </span>
+            <!-- Distance from RPC -->
+            <small>${(event.distance / 1000).toFixed(1)} km away</small>
+          </div>
+        `;
+        
+        // If it's in "Available Events," add a "Get Directions" button
+        if (isAvailableList) {
+          card.innerHTML += `
+            <button class="get-direction-btn" style="margin-top: 0.5rem;">Get Directions</button>
+          `;
+        }
+        
+        card.addEventListener('click', () => {
+          console.log("Event card clicked, eventId:", event.id);
+          showEventDetails(event.id);
+        });
+        
+        container.appendChild(card);
+        
+        // If we have a "Get Directions" button, wire up the click event
+        if (isAvailableList) {
+          const dirBtn = card.querySelector('.get-direction-btn');
+          if (dirBtn) {
+            dirBtn.addEventListener('click', (evt) => {
+              evt.stopPropagation(); // prevent also showing event details
+              getDirectionsForEvent(event);
+            });
+          }
+        }
+      });
+    }
+    
+    // 7b. Timer updates every second
+    function updateTimeRemaining() {
+      const timeElements = document.querySelectorAll('.time-remaining');
+      timeElements.forEach(el => {
+        const endTime = new Date(el.getAttribute('data-endtime'));
+        const now = new Date();
+        let diff = endTime - now;
+        if (diff < 0) {
+          el.textContent = ' (Expired)';
+        } else {
+          const minutes = Math.floor(diff / 60000);
+          const seconds = Math.floor((diff % 60000) / 1000);
+          el.textContent = ` (Expires in ${minutes}m ${seconds}s)`;
+        }
+      });
+    }
+    setInterval(updateTimeRemaining, 1000);
+    
+    // 7c. "Get Directions" -> parse event.location & open Google Maps
+    function getDirectionsForEvent(event) {
+      if (!event.location) {
+        Swal.fire({ icon: 'error', title: 'No Location', text: 'This event has no valid location data.' });
+        return;
+      }
+      // event.location should be "POINT(lng lat)"
+      const match = event.location.match(/POINT\((-?\d+(\.\d+)?)\s+(-?\d+(\.\d+)?)\)/);
+      if (!match) {
+        Swal.fire({ icon: 'error', title: 'Invalid Location', text: 'Could not parse event location.' });
+        return;
+      }
+      const lng = match[1];
+      const lat = match[3];
+      const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+      window.open(googleMapsUrl, '_blank');
+    }
+    
+    // 8. Show event details overlay
+    async function showEventDetails(eventId) {
+      console.log("Showing details for eventId:", eventId);
+      try {
+        const { data: event, error } = await supabaseClient
+          .from('events')
+          .select('*')
+          .eq('id', eventId)
+          .single();
+        if (error) throw error;
+        
+        let content = `
+          <h3>${event.title}</h3>
+          <p>${event.description || 'No details provided.'}</p>
+          <p>Status: ${getEventStatus(event)}</p>
+        `;
+        
+        // If it's a help event, show additional controls
+        if (event.event_type === 'help' || event.event_type === 'urgent') {
+          const { data: participant } = await supabaseClient
+            .from('event_participants')
+            .select('*')
+            .eq('event_id', eventId)
+            .eq('user_id', currentUser.user_id)
+            .maybeSingle();
+          if (!participant && event.user_id !== currentUser.user_id && event.status) {
+            content += `<button id="registerBtn">I Can Help</button>`;
+          } else if (participant) {
+            content += `<p>You are already registered for this request.</p>`;
+          }
+          
+          if (event.user_id === currentUser.user_id) {
+            const { data: participants } = await supabaseClient
+              .from('event_participants')
+              .select('user_id, attended')
+              .eq('event_id', eventId);
+            if (participants && participants.length > 0) {
+              content += `<h4>Volunteers Registered:</h4><ul>`;
+              participants.forEach(p => {
+                content += `<li>${p.user_id} ${p.attended ? '<span class="tick">&#10003;</span>' : ''}</li>`;
+              });
+              content += `</ul>`;
+            } else {
+              content += `<p>No volunteers registered yet.</p>`;
+            }
+            content += `<button id="markHelpedBtn">Mark Helped</button>`;
+            content += `<button id="endHelpBtn">End Help Request</button>`;
+          }
+        }
+        
+        document.getElementById('eventDetailsContent').innerHTML = content;
+        document.getElementById('eventDetailsOverlay').style.display = 'flex';
+        
+        // Register to help
+        if (document.getElementById('registerBtn')) {
+          document.getElementById('registerBtn').addEventListener('click', async () => {
+            console.log("Register button clicked for eventId:", eventId);
+            try {
+              const { error: regError } = await supabaseClient
+                .from('event_participants')
+                .insert([{ event_id: eventId, user_id: currentUser.user_id }]);
+              if (regError) throw regError;
+              Swal.fire({ icon: 'success', title: 'Registered', text: 'You have registered for this request.' });
+              closeOverlay('eventDetailsOverlay');
+              loadEvents();
+            } catch (regErr) {
+              Swal.fire({ icon: 'error', title: 'Registration Error', text: regErr.message });
+            }
+          });
+        }
+        
+        // Mark helped
+        if (document.getElementById('markHelpedBtn')) {
+          document.getElementById('markHelpedBtn').addEventListener('click', () => {
+            console.log("Mark Helped button clicked for eventId:", eventId);
+            window.currentEventIdForMarking = eventId;
+            document.getElementById('qrScannerOverlay').style.display = 'flex';
+            startScanner();
+          });
+        }
+        
+        // End help
+        if (document.getElementById('endHelpBtn')) {
+          document.getElementById('endHelpBtn').addEventListener('click', async () => {
+            console.log("End Help Request clicked for eventId:", eventId);
+            try {
+              const { error: endError } = await supabaseClient
+                .from('events')
+                .update({ status: false })
+                .eq('id', eventId);
+              if (endError) throw endError;
+              Swal.fire({ icon: 'success', title: 'Help Ended', text: 'Your request has been ended.' });
+              closeOverlay('eventDetailsOverlay');
+              loadEvents();
+            } catch (endErr) {
+              Swal.fire({ icon: 'error', title: 'Error', text: endErr.message });
+            }
+          });
+        }
+      } catch (err) {
+        console.error("Error in showEventDetails:", err);
+        Swal.fire({ icon: 'error', title: 'Error', text: err.message });
+      }
+    }
+    
+    // 9. closeOverlay
+    function closeOverlay(id) {
+      const overlay = document.getElementById(id);
+      if (overlay) {
+        overlay.style.display = 'none';
+        // Clear QR code if overlay is My QR
+        if (id === 'qrOverlay') {
+          document.getElementById('qrCodeContainer').innerHTML = '';
+        }
+        // Stop scanner if overlay is for scanning
+        if (id === 'qrScannerOverlay' && html5QrcodeScanner) {
+          html5QrcodeScanner.clear().catch(error => {
+            console.error('Scanner cleanup error:', error);
+          });
+          html5QrcodeScanner = null;
+        }
+      }
+    }
+    
+    // 10. QR Scanner Setup
+    let html5QrcodeScanner = null;
+    function startScanner() {
+      if (!window.Html5Qrcode) {
+        console.error("html5-qrcode library not loaded.");
+        Swal.fire({ icon: "error", title: "QR Scanner Error", text: "QR scanner library failed to load." });
+        return;
+      }
+      if (!window.Html5QrcodeScanType) {
+        console.error("Html5QrcodeScanType is undefined.");
+        Swal.fire({ icon: "error", title: "Scanner Error", text: "QR scanner type is not supported." });
+        return;
+      }
+      if (!html5QrcodeScanner) {
+        html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { 
+          fps: 10, 
+          qrbox: 250,
+          supportedScanTypes: [window.Html5QrcodeScanType.SCAN_TYPE_CAMERA]
+        });
+        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+      }
+    }
+    function stopScanner() {
+      if (html5QrcodeScanner) {
+        html5QrcodeScanner.clear().catch(error => {
+          console.error("Scanner cleanup error:", error);
+        });
+        html5QrcodeScanner = null;
+      }
+    }
+    function onScanSuccess(decodedText, decodedResult) {
+      console.log("QR scan successful, decodedText:", decodedText);
+      stopScanner();
+      processMarkHelp(decodedText);
+    }
+    function onScanFailure(error) {
+      console.log("QR scan failure:", error);
+    }
+    document.getElementById('stopScannerBtn').addEventListener('click', () => {
+      stopScanner();
+      closeOverlay('qrScannerOverlay');
+    });
+    
+    // 11. processMarkHelp
+    async function processMarkHelp(volunteerId) {
+      console.log("Processing mark helped for volunteerId:", volunteerId);
+      const eventId = window.currentEventIdForMarking;
+      const { data: participant } = await supabaseClient
+        .from('event_participants')
+        .select('*')
+        .eq('event_id', eventId)
+        .eq('user_id', volunteerId)
+        .maybeSingle();
+      if (!participant) {
+        Swal.fire({ icon: 'error', title: 'Not Registered', text: 'This volunteer is not registered for this event.' });
+        return;
+      }
+      if (participant.attended) {
+        Swal.fire({ icon: 'warning', title: 'Already Marked', text: 'This volunteer has already been marked as helped.' });
+        return;
+      }
+      const { error: updateError } = await supabaseClient
+        .from('event_participants')
+        .update({ attended: true })
+        .eq('event_id', eventId)
+        .eq('user_id', volunteerId);
+      if (updateError) {
+        Swal.fire({ icon: 'error', title: 'Error', text: updateError.message });
+        return;
+      }
+      // Award 1 coin to volunteer
+      const { data: volunteerData } = await supabaseClient
+        .from('users')
+        .select('reward_points')
+        .eq('user_id', volunteerId)
+        .maybeSingle();
+      let newPoints = (volunteerData?.reward_points || 0) + 1;
+      const { error: updateUserError } = await supabaseClient
+        .from('users')
+        .update({ reward_points: newPoints })
+        .eq('user_id', volunteerId);
+      if (updateUserError) {
+        Swal.fire({ icon: 'error', title: 'Error', text: updateUserError.message });
+        return;
+      }
+      Swal.fire({ icon: 'success', title: 'Marked Helped', text: `Volunteer ${volunteerId} has been marked as helped and awarded 1 coin.` });
+      closeOverlay('qrScannerOverlay');
+      loadEvents();
+    }
+    
+    // 12. Ask Help
+    document.getElementById('askHelpBtn').addEventListener('click', () => {
+      console.log("Ask Help button clicked.");
+      document.getElementById('helpLocation').value = currentUser.location;
+      document.getElementById('askHelpOverlay').style.display = 'flex';
+    });
+    document.getElementById('updateHelpLocationBtn').addEventListener('click', () => {
+      if (navigator.geolocation) {
+        Swal.fire({ title: 'Fetching Location', text: 'Please wait...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+        navigator.geolocation.getCurrentPosition(position => {
+          const lng = position.coords.longitude;
+          const lat = position.coords.latitude;
+          const point = `POINT(${lng} ${lat})`;
+          document.getElementById('helpLocation').value = point;
+          Swal.close();
+          console.log("Help location updated:", point);
+        }, error => {
+          Swal.close();
+          Swal.fire({ icon: 'error', title: 'Location Error', text: 'Unable to fetch location. Please try again.' });
+        });
+      } else {
+        Swal.fire({ icon: 'error', title: 'Not Supported', text: 'Geolocation is not supported by your browser.' });
+      }
+    });
+    document.getElementById('askHelpForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const helpDetails = document.getElementById('helpDetails').value.trim();
+      const volunteersNeeded = parseInt(document.getElementById('volunteersNeeded').value);
+      const helpLocation = document.getElementById('helpLocation').value;
+      const expireSeconds = parseInt(document.getElementById('helpExpireTime').value);
+      if (!helpDetails || !volunteersNeeded || !helpLocation) {
+        Swal.fire({ icon: 'warning', title: 'Missing Fields', text: 'Please complete all fields.' });
+        return;
+      }
+      const now = new Date();
+      const expireTime = new Date(now.getTime() + expireSeconds * 1000);
+      document.getElementById('askHelpForm').querySelector('button[type="submit"]').disabled = true;
+      try {
+        const { data, error } = await supabaseClient
+          .from('events')
+          .insert([{
+            user_id: currentUser.user_id,
+            title: 'Help Request',
+            description: helpDetails,
+            event_type: 'help',
+            location: helpLocation,
+            status: true,
+            start_time: now.toISOString(),
+            end_time: expireTime.toISOString(),
+            max_participants: volunteersNeeded
+          }]);
+        if (error) throw error;
+        console.log("Help request created:", data);
+        Swal.fire({ icon: 'success', title: 'Help Request Created', text: 'Your help request has been posted.' });
+        closeOverlay('askHelpOverlay');
+        loadEvents();
+      } catch (err) {
+        Swal.fire({ icon: 'error', title: 'Error', text: err.message });
+      } finally {
+        document.getElementById('askHelpForm').querySelector('button[type="submit"]').disabled = false;
+      }
+    });
+    
+    // 13. Urgent Emergency overlay with speech recognition
+    let recognition;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById('emergencyVoiceMsg').value = transcript;
+        console.log("Voice transcript:", transcript);
+      };
+      recognition.onerror = function(event) {
+        Swal.fire({ icon: 'error', title: 'Speech Recognition Error', text: event.error });
+      };
+    } else {
+      document.getElementById('recordVoiceBtn').disabled = true;
+      document.getElementById('emergencyVoiceMsg').placeholder = 'Voice input not supported - type your message';
+    }
+    document.getElementById('urgentEmergencyBtn').addEventListener('click', () => {
+      console.log("Urgent Emergency button clicked.");
+      document.getElementById('urgentEmergencyOverlay').style.display = 'flex';
+    });
+    document.getElementById('recordVoiceBtn').addEventListener('click', () => {
+      if (recognition) {
+        console.log("Starting voice recognition...");
+        recognition.start();
+        Swal.fire({ icon: 'info', title: 'Recording...', text: 'Speak now. Click OK when finished.', allowOutsideClick: false });
+      }
+    });
+    document.getElementById('submitEmergencyBtn').addEventListener('click', async () => {
+      const voiceMsg = document.getElementById('emergencyVoiceMsg').value.trim();
+      if (!voiceMsg) {
+        Swal.fire({ icon: 'warning', title: 'No Message', text: 'Please record a voice message.' });
+        return;
+      }
+      const transcribed = "Transcribed: " + voiceMsg;
+      const now = new Date();
+      const expireTime = new Date(now.getTime() + 86400 * 1000);
+      try {
+        const { data, error } = await supabaseClient
+          .from('events')
+          .insert([{
+            user_id: currentUser.user_id,
+            title: 'Urgent Emergency',
+            description: transcribed,
+            event_type: 'urgent',
+            location: currentUser.location,
+            status: true,
+            start_time: now.toISOString(),
+            end_time: expireTime.toISOString(),
+            max_participants: 10
+          }]);
+        if (error) throw error;
+        console.log("Urgent emergency event created:", data);
+        Swal.fire({ icon: 'success', title: 'Emergency Sent', text: 'Your emergency help request has been posted.' });
+        closeOverlay('urgentEmergencyOverlay');
+        loadEvents();
+      } catch (err) {
+        Swal.fire({ icon: 'error', title: 'Error', text: err.message });
+      }
+    });
+    
+    // 14. Under Development
+    document.getElementById('hostEventBtn').addEventListener('click', () => {
+      Swal.fire({ title: 'Host Event', text: 'This feature will allow you to host events. (Under Development)', icon: 'info' });
+    });
+    document.getElementById('exchangeBtn').addEventListener('click', () => {
+      Swal.fire({ title: 'Exchange/Borrow', text: 'This feature will allow you to exchange or borrow items. (Under Development)', icon: 'info' });
+    });
+    document.getElementById('onlineGamesBtn').addEventListener('click', () => {
+      Swal.fire({ title: 'Online Games', text: 'This feature will be added soon!', icon: 'info' });
+    });
+    
+    // 15. Reload events when radius changes
+    document.getElementById('radiusSelector').addEventListener('change', () => {
+      console.log("Radius changed, reloading events...");
+      loadEvents();
+    });
+    
+    // 16. Initial load of events
+    loadEvents();
+    
+    // 17. Global error handler
+    window.addEventListener('error', (event) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Application Error',
+        text: event.error ? event.error.message : 'An error occurred.',
+        footer: `${event.filename}:${event.lineno}`
+      });
+    });
+  </script>
+</body>
+</html>
